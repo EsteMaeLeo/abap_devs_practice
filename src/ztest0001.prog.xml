@@ -9,6 +9,13 @@
     <FIXPT>X</FIXPT>
     <UCCHECK>X</UCCHECK>
    </PROGDIR>
+   <TPOOL>
+    <item>
+     <ID>R</ID>
+     <ENTRY>Program ZTEST0001</ENTRY>
+     <LENGTH>17</LENGTH>
+    </item>
+   </TPOOL>
   </asx:values>
  </asx:abap>
 </abapGit>
