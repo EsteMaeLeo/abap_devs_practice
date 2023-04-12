@@ -115,6 +115,12 @@
     </item>
     <item>
      <ID>S</ID>
+     <KEY>P_DELETE</KEY>
+     <ENTRY>Delete User</ENTRY>
+     <LENGTH>23</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
      <KEY>P_DNI</KEY>
      <ENTRY>Id number</ENTRY>
      <LENGTH>17</LENGTH>
@@ -157,6 +163,12 @@
     </item>
     <item>
      <ID>S</ID>
+     <KEY>P_MODIFY</KEY>
+     <ENTRY>Modify User</ENTRY>
+     <LENGTH>19</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
      <KEY>P_NOMBRE</KEY>
      <ENTRY>Name</ENTRY>
      <LENGTH>12</LENGTH>
@@ -184,6 +196,12 @@
      <KEY>P_TIK_R</KEY>
      <ENTRY>Food Benefit</ENTRY>
      <LENGTH>20</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_UPDATE</KEY>
+     <ENTRY>Update User</ENTRY>
+     <LENGTH>23</LENGTH>
     </item>
     <item>
      <ID>S</ID>

@@ -38,6 +38,36 @@
      <MSGNR>004</MSGNR>
      <TEXT>&amp;1 Employee doesnt exist</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCUSTOM001</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Employee Updated</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCUSTOM001</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>Employee doesnt Updated</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCUSTOM001</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>Employee Deleted</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCUSTOM001</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>Employee doesnt Deleted</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCUSTOM001</ARBGB>
+     <MSGNR>009</MSGNR>
+     <TEXT>Employee data modified or created</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

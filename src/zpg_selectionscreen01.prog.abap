@@ -16,7 +16,10 @@ SELECTION-SCREEN BEGIN OF BLOCK block7 WITH FRAME TITLE TEXT-t10.
 
 "CRUD
 PARAMETERS: p_create RADIOBUTTON GROUP crud,
-            p_read   RADIOBUTTON GROUP crud.
+            p_read   RADIOBUTTON GROUP crud,
+            p_update RADIOBUTTON GROUP crud,
+            p_delete RADIOBUTTON GROUP crud,
+            p_modify RADIOBUTTON GROUP crud.
 
 SELECTION-SCREEN END OF BLOCK block7.
 
@@ -134,6 +137,12 @@ START-OF-SELECTION.
       PERFORM f_create_user.
     WHEN p_read.
       PERFORM f_select_user USING p_dni.
+    WHEN p_update.
+      PERFORM f_update_user USING p_dni.
+    WHEN p_delete.
+      PERFORM f_delete_user USING p_dni.
+    WHEN p_modify.
+      PERFORM f_modify_user USING p_dni.
     WHEN OTHERS.
 
   ENDCASE.
@@ -166,16 +175,31 @@ FORM f_create_user.
 
 ENDFORM.
 
-FORM f_select_user USING us_id TYPE zemployee_001-id.
+FORM f_read_employee USING    us_id       TYPE zemployee_001-id
+                     CHANGING ch_employee TYPE zemployee_001.
 
-    data wa_employee TYPE zemployee_001.
 
   SELECT SINGLE *
-    INTO wa_employee
+    INTO ch_employee
     FROM zemployee_001
    WHERE id EQ us_id.
 
-  IF sy-subrc EQ 0.
+  IF sy-subrc NE 0.
+    .
+    MESSAGE e004(zcustom001) WITH us_id .
+
+  ENDIF.
+
+ENDFORM.
+
+FORM f_select_user USING us_id TYPE zemployee_001-id.
+
+  DATA wa_employee TYPE zemployee_001.
+
+  PERFORM f_read_employee USING    us_id
+                          CHANGING wa_employee.
+
+  IF wa_employee IS NOT INITIAL.
 
     WRITE: / 'ID: ', wa_employee-id,
            / 'Email: ', wa_employee-email,
@@ -190,4 +214,83 @@ FORM f_select_user USING us_id TYPE zemployee_001-id.
     MESSAGE e004(zcustom001) WITH us_id .
 
   ENDIF.
+ENDFORM.
+
+FORM f_update_user USING us_id TYPE zemployee_001-id.
+
+  "select first and validate the employee
+  DATA wa_employee TYPE zemployee_001.
+
+  PERFORM f_read_employee USING    us_id
+                          CHANGING wa_employee.
+
+  IF wa_employee IS NOT INITIAL.
+
+    wa_employee-email           = p_email.
+    wa_employee-name            = p_nombre.
+    wa_employee-lastname1       = p_ape1.
+    wa_employee-lastname2       = p_ape2.
+
+    UPDATE zemployee_001 FROM wa_employee.
+    IF sy-subrc EQ 0.
+      MESSAGE i005(zcustom001).
+    ELSE.
+      MESSAGE i006(zcustom001).
+    ENDIF.
+
+  ELSE.
+
+    MESSAGE e004(zcustom001) WITH us_id .
+
+  ENDIF.
+
+ENDFORM.
+
+FORM f_delete_user USING us_id TYPE zemployee_001-id.
+
+  DATA wa_employee TYPE zemployee_001.
+
+  PERFORM f_read_employee USING    us_id
+                          CHANGING wa_employee.
+
+  IF wa_employee IS NOT INITIAL.
+
+
+    "DELETE FROM zemployee_001 WHERE id = us_id .
+    DELETE zemployee_001 FROM wa_employee.
+    IF sy-subrc EQ 0.
+      MESSAGE i007(zcustom001).
+    ELSE.
+      MESSAGE e008(zcustom001).
+    ENDIF.
+
+  ELSE.
+
+    MESSAGE e004(zcustom001) WITH us_id .
+
+  ENDIF.
+
+ENDFORM.
+
+FORM f_modify_user USING us_id TYPE zemployee_001-id.
+
+  "modify or create depends if not found the employee in the table
+
+  DATA wa_employee TYPE zemployee_001.
+
+  " move to the work area
+  wa_employee-id              = p_dni.
+  wa_employee-email           = p_email.
+  wa_employee-name            = p_nombre.
+  wa_employee-lastname1       = p_ape1.
+  wa_employee-lastname2       = p_ape2.
+  wa_employee-date_birth      = p_fecha.
+  wa_employee-date_activation = p_fechaa.
+
+  MODIFY zemployee_001 FROM wa_employee.
+  IF sy-subrc EQ 0.
+    MESSAGE i009(zcustom001).
+  ENDIF.
+
+
 ENDFORM.
