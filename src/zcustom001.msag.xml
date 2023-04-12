@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZCUSTOM001</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+    <STEXT>Custom messages</STEXT>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCUSTOM001</ARBGB>
+     <MSGNR>000</MSGNR>
+     <TEXT>Field not accept numeric values</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCUSTOM001</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>&amp;1 Require field</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCUSTOM001</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Employee created in the database</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCUSTOM001</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Error: Failed to created the employee</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCUSTOM001</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>&amp;1 Employee doesnt exist</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>
