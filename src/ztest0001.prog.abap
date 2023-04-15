@@ -29,11 +29,11 @@ CLASS lcl_report001 DEFINITION
         IMPORTING
           iv_num TYPE i,
 
-      get_int_table "return internal table of int
+      get_int_table
         RETURNING
           VALUE(irv_int) TYPE itype,
 
-      fill_sort_buzzfuzz " fill internal table method using return
+      fill_sort_buzzfuzz " method using return
         IMPORTING
           iv_num         TYPE i
         RETURNING
@@ -57,7 +57,7 @@ CLASS lcl_report001 IMPLEMENTATION.
 
   METHOD fill_sort_intable.
 
-    it_int = VALUE #( FOR i = 0 THEN i + 1 UNTIL i <= iv_num
+    it_int = VALUE #( FOR i = 0 THEN i + 1 UNTIL i > iv_num
                     ( i ) ).
 
   ENDMETHOD.
