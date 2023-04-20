@@ -30,9 +30,9 @@ CLASS lcl_vehicle DEFINITION
 
   PROTECTED SECTION.
   PRIVATE SECTION.
-   CLASS-DATA: iv_count TYPE i.
-    DATA: company  TYPE string,
-          model    TYPE string.
+    CLASS-DATA: iv_count TYPE i.
+    DATA: company TYPE string,
+          model   TYPE string.
 ENDCLASS.
 "&-------------------------------------------------------------*
 CLASS lcl_practice DEFINITION
@@ -40,7 +40,8 @@ CLASS lcl_practice DEFINITION
 
   PUBLIC SECTION.
     METHODS: m_inline,
-      using_new.
+      using_new,
+      using_value_itab_wa.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -190,6 +191,66 @@ CLASS lcl_practice IMPLEMENTATION.
 
 
 
+  METHOD using_value_itab_wa.
+****BEFORE 7.4****
+    TYPES: BEGIN OF ty_car,
+             company TYPE string,
+             model   TYPE string,
+             year    TYPE dats,
+             price   TYPE string,
+           END OF ty_car.
+
+    DATA ls_car TYPE ty_car.
+
+    ls_car-company = 'BMW'.
+    ls_car-model = 'Z3'.
+    ls_car-year = '20200202'.
+    ls_car-price = '8000'.
+
+    WRITE: /, ls_car-company, ls_car-model, ls_car-year, ls_car-price.
+
+****AFTER****
+
+    DATA(ls_car2) = VALUE ty_car(
+                            company = 'BMW'
+                            model = 'X3'
+                            year = '20190202'
+                            price = '8000' ).
+
+    WRITE: /, |new|.
+    WRITE: /, ls_car2-company, ls_car2-model, ls_car2-year, ls_car2-price.
+
+    DATA ls_car3 TYPE ty_car.
+
+    ls_car3 = VALUE #(
+                         company = 'BMW'
+                         model = 'X5'
+                         year = '20200202'
+                         price = '8000' ).
+
+    WRITE: /, |new|.
+    WRITE: /, ls_car3-company, ls_car3-model, ls_car3-year, ls_car3-price.
+
+****before****
+    DATA it_car TYPE STANDARD TABLE OF ty_car.
+    APPEND ls_car TO it_car.
+    APPEND ls_car2 TO it_car.
+
+****after****
+    it_car = VALUE #( ( company = 'BMW'
+                        model = 'X5'
+                        year = '20200202'
+                        price = '8000'
+                      )
+                      (
+                        company = 'BMW'
+                        model = 'X3'
+                        year = '20190202'
+                        price = '8000'
+                      )  ).
+
+  ENDMETHOD.
+
 ENDCLASS.
 "&-------------------------------------------------------------*
 "& Selection-screen
@@ -202,3 +263,4 @@ BREAK-POINT.
 DATA(lv_new) = NEW lcl_practice(  ).
 lv_new->m_inline(  ).
 lv_new->using_new(  ).
+lv_new->using_value_itab_wa(  ).
