@@ -41,7 +41,8 @@ CLASS lcl_practice DEFINITION
   PUBLIC SECTION.
     METHODS: m_inline,
       using_new,
-      using_value_itab_wa.
+      using_value_itab_wa,
+      using_for.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -251,6 +252,33 @@ CLASS lcl_practice IMPLEMENTATION.
 
   ENDMETHOD.
 
+  METHOD using_for.
+
+    TYPES: BEGIN OF ty_person,
+             id   TYPE i,
+             name TYPE char30,
+             age  TYPE i,
+             city TYPE char30,
+           END OF ty_person,
+
+           tt_persons TYPE SORTED TABLE OF ty_person
+                        WITH UNIQUE KEY id,
+
+           tt_city    TYPE STANDARD TABLE OF char30 WITH EMPTY KEY.
+
+    DATA(it_persons) = VALUE tt_persons(
+                             ( id = 1 name ='George'  age = 30  city = 'Nashville' )
+                             ( id = 3 name ='Mikey'   age = 20  city = 'New York' )
+                             ( id = 4 name ='Luigy'   age = 33  city = 'Los Angeles' )
+                             ( id = 2 name ='Mario'   age = 39  city = 'Miami' )
+                             ( id = 5 name ='Browser' age = 50  city = 'Madrid' ) ).
+
+
+    DATA(it_city) = VALUE tt_city( FOR ls_persons IN it_persons
+                                   ( ls_persons-city ) ).
+
+  ENDMETHOD.
+
 ENDCLASS.
 "&-------------------------------------------------------------*
 "& Selection-screen
@@ -264,3 +292,4 @@ DATA(lv_new) = NEW lcl_practice(  ).
 lv_new->m_inline(  ).
 lv_new->using_new(  ).
 lv_new->using_value_itab_wa(  ).
+lv_new->using_for(  ).
