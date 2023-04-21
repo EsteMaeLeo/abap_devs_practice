@@ -261,21 +261,54 @@ CLASS lcl_practice IMPLEMENTATION.
              city TYPE char30,
            END OF ty_person,
 
-           tt_persons TYPE SORTED TABLE OF ty_person
+           tt_persons     TYPE SORTED TABLE OF ty_person
                         WITH UNIQUE KEY id,
 
-           tt_city    TYPE STANDARD TABLE OF char30 WITH EMPTY KEY.
+           tt_city        TYPE STANDARD TABLE OF char30 WITH EMPTY KEY,
+
+           tt_pers_london TYPE STANDARD TABLE OF char30 WITH EMPTY KEY.
 
     DATA(it_persons) = VALUE tt_persons(
                              ( id = 1 name ='George'  age = 30  city = 'Nashville' )
-                             ( id = 3 name ='Mikey'   age = 20  city = 'New York' )
+                             ( id = 3 name ='Mikey'   age = 20  city = 'London' )
                              ( id = 4 name ='Luigy'   age = 33  city = 'Los Angeles' )
-                             ( id = 2 name ='Mario'   age = 39  city = 'Miami' )
+                             ( id = 2 name ='Mario'   age = 39  city = 'London' )
                              ( id = 5 name ='Browser' age = 50  city = 'Madrid' ) ).
 
 
     DATA(it_city) = VALUE tt_city( FOR ls_persons IN it_persons
                                    ( ls_persons-city ) ).
+
+    DATA(it_persons_lond) = VALUE tt_pers_london( FOR ls_persons IN it_persons WHERE ( city = 'London' )
+                                                  ( ls_persons-name ) ).
+    DATA it_per_filter TYPE tt_persons.
+    DATA carrid TYPE spfli-carrid VALUE 'LH'.
+    cl_demo_input=>add_field( CHANGING field = carrid ).
+    DATA cityfrom TYPE spfli-cityfrom VALUE 'Frankfurt'.
+    cl_demo_input=>request( CHANGING field = cityfrom ).
+
+    DATA spfli_tab TYPE STANDARD TABLE OF spfli
+                   WITH EMPTY KEY
+                   WITH NON-UNIQUE SORTED KEY carr_city
+                        COMPONENTS carrid cityfrom.
+
+    SELECT *
+           FROM spfli
+           INTO TABLE @spfli_tab.
+
+    DATA(extract) =
+      FILTER #( spfli_tab USING KEY carr_city
+                  WHERE carrid   = CONV #( to_upper( carrid ) ) AND
+                        cityfrom = CONV #( to_upper( cityfrom ) ) ).
+
+    cl_demo_output=>display( extract ).
+
+    DATA(rest) =
+      FILTER #( spfli_tab EXCEPT USING KEY carr_city
+                  WHERE carrid   = CONV #( to_upper( carrid ) ) AND
+                        cityfrom = CONV #( to_upper( cityfrom ) ) ).
+
+    ASSERT lines( extract ) + lines( rest ) = lines( spfli_tab ).
 
   ENDMETHOD.
 
