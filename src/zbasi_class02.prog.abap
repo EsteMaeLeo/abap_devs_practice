@@ -46,15 +46,24 @@ CLASS lcl_car DEFINITION
     CLASS-DATA: numberofcars TYPE i.
 
     METHODS:
+      constructor
+        IMPORTING make        TYPE string
+                  model       TYPE string
+                  max_speed   TYPE i
+                  numberseats TYPE i,
+
       setnumsetas
         IMPORTING numberseats TYPE i,
 
+      original_gofaster
+        IMPORTING speed    TYPE i
+        EXPORTING newspeed TYPE i,
       gofaster
         IMPORTING speed    TYPE i
         EXPORTING newspeed TYPE i,
 
       goslower
-        IMPORTING speed    TYPE i
+        IMPORTING speed           TYPE i
         RETURNING VALUE(newspeed) TYPE i.
 
   PROTECTED SECTION.
@@ -103,6 +112,16 @@ ENDCLASS.
 *&--------car----------------------------------------------------------*
 CLASS lcl_car IMPLEMENTATION.
 
+  METHOD constructor.
+
+    me->make   = make.
+    me->model  = model.
+    me->numberseats = numberseats.
+    me->max_speed = max_speed.
+    me->numberofcars = me->numberofcars + 1.
+
+  ENDMETHOD.
+
   METHOD setnumsetas.
 
     me->numberseats = numberseats.
@@ -110,7 +129,8 @@ CLASS lcl_car IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD gofaster.
-     me->speed = speed + me->speed.
+*this method diferent if you increse the speed will set to max_speed if speed More than max_speed.
+    DATA(lv_temp) = speed + me->speed.
 
     newspeed = COND i(
         WHEN me->speed >= max_speed THEN max_speed
@@ -118,11 +138,30 @@ CLASS lcl_car IMPLEMENTATION.
 
     me->speed = newspeed.
 
-ENDMETHOD.
+  ENDMETHOD.
 
-METHOD goslower.
+  METHOD original_gofaster.
 
-ENDMETHOD.
+    DATA(lv_temp) = speed + me->speed.
+
+    IF lv_temp <= max_speed.
+      me->speed = lv_temp.
+    ENDIF.
+
+    newspeed = me->speed.
+
+  ENDMETHOD.
+
+  METHOD goslower.
+
+    me->speed = me->speed - speed.
+    if me->speed < 0.
+      me->speed = 0.
+    endif.
+
+    newspeed = me->speed.
+
+  ENDMETHOD.
 
 ENDCLASS.
 *&---------------------------------------------------------------------*
@@ -134,7 +173,10 @@ START-OF-SELECTION.
   DATA(lv_gender) = lo_student->get_status_text('1').
 
   "---- NEW CAR ---
-  DATA(lo_car) = NEW lcl_car( ).
+  DATA(lo_car) = NEW lcl_car( make = 'Audi'
+                              model = 'A4'
+                              max_speed = 240
+                              numberseats = 4 ).
   DATA(lv_speed) = 0.
   DATA(increment_speed) = 10.
   lo_car->gofaster( EXPORTING speed = increment_speed
