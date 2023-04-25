@@ -15,9 +15,14 @@ INITIALIZATION.
 *----------------------------------------------------------------------*
 *     AT SELECTION-SCREEN ON VALUE-REQUEST
 *----------------------------------------------------------------------*
-AT SELECTION-SCREEN ON p_spath.
+ AT SELECTION-SCREEN OUTPUT.
+   PERFORM f_modify_screen.
+
+AT SELECTION-SCREEN ON p_lpath.
 
 AT SELECTION-SCREEN ON VALUE-REQUEST FOR p_file.
 
 
 START-OF-SELECTION.
+BREAK-POINT.
+  PERFORM f_open_appfile.

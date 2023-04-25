@@ -17,9 +17,75 @@
      <LENGTH>18</LENGTH>
     </item>
     <item>
+     <ID>I</ID>
+     <KEY>T01</KEY>
+     <ENTRY>Mass Upload People</ENTRY>
+     <LENGTH>28</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>T02</KEY>
+     <ENTRY>Application | Presentation</ENTRY>
+     <LENGTH>30</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>T03</KEY>
+     <ENTRY>Read file</ENTRY>
+     <LENGTH>10</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>T04</KEY>
+     <ENTRY>Write CSV file</ENTRY>
+     <LENGTH>24</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>T05</KEY>
+     <ENTRY>File Path</ENTRY>
+     <LENGTH>20</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>T06</KEY>
+     <ENTRY>Read and Write files</ENTRY>
+     <LENGTH>40</LENGTH>
+    </item>
+    <item>
      <ID>R</ID>
      <ENTRY>Upload files People</ENTRY>
      <LENGTH>19</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_DESK</KEY>
+     <ENTRY>Presentation server</ENTRY>
+     <LENGTH>27</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_FILE</KEY>
+     <ENTRY>File name</ENTRY>
+     <LENGTH>17</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_LFILE</KEY>
+     <ENTRY>Logical File Name</ENTRY>
+     <LENGTH>25</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_LPATH</KEY>
+     <ENTRY>Logical File Path</ENTRY>
+     <LENGTH>25</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_SERVER</KEY>
+     <ENTRY>Application server</ENTRY>
+     <LENGTH>26</LENGTH>
     </item>
    </TPOOL>
   </asx:values>
