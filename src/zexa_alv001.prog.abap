@@ -9,13 +9,22 @@ INCLUDE zexa_alv001_top.
 
 INCLUDE zexa_alv001_sel.
 
-INCLUDE zexa_alv001_form01.
+INCLUDE zexa_alv001_f01.
+
+AT SELECTION-SCREEN OUTPUT.
+  IF p_normal EQ abap_true.
+    LOOP AT SCREEN.
+      if screen-group1 = 'R11'.
+      endif.
+    ENDLOOP.
+  ENDIF.
 
 START-OF-SELECTION.
+  BREAK-POINT.
+
+  PERFORM f_build_fieldcat CHANGING gt_fieldcat.
 
   PERFORM f_get_data.
-
-  PERFORM f_build_fieldcat.
 
   CASE abap_true.
     WHEN p_list.

@@ -9,7 +9,11 @@ TYPES: BEGIN OF ty_flights,
          connid   TYPE s_conn_id,
          cityfrom TYPE s_from_cit,
          cityto   TYPE s_to_city,
-       END OF ty_flights.
+       END OF ty_flights,
 
-DATA: gt_flights  TYPE TABLE OF ty_flights,
-      gt_fieldcat TYPE slis_t_fieldcat_alv.
+       tt_flights       TYPE STANDARD TABLE OF ty_flights,
+       tt_flights_field TYPE STANDARD TABLE OF zspfli.
+
+DATA: gt_flights       TYPE tt_flights,
+      gt_flights_field TYPE tt_flights_field,
+      gt_fieldcat      TYPE slis_t_fieldcat_alv.

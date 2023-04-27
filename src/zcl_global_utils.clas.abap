@@ -15,6 +15,7 @@ public section.
   constants C_PERSON type CHAR5 value 'person' ##NO_TEXT.
   constants C_TXT type CHAR4 value '.txt' ##NO_TEXT.
   constants C_SPACE type CHAR1 value ' ' ##NO_TEXT.
+  constants C_STR_FLIGHT type CHAR6 value 'ZSPFLI' ##NO_TEXT.
 protected section.
 private section.
 ENDCLASS.
