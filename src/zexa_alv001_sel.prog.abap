@@ -1,11 +1,12 @@
 *&---------------------------------------------------------------------*
 *&  Include           ZEXA_ALV001_SEL
 *&---------------------------------------------------------------------*
+TABLES: spfli.
 SELECTION-SCREEN BEGIN OF BLOCK block1 WITH FRAME TITLE TEXT-001.
 
 SELECTION-SCREEN BEGIN OF BLOCK block2 WITH FRAME TITLE TEXT-002.
 
-PARAMETERS: p_carr TYPE s_carr_id.
+SELECT-OPTIONS: so_carr FOR spfli-carrid.
 
 SELECTION-SCREEN END OF BLOCK block2.
 

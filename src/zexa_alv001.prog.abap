@@ -30,5 +30,6 @@ START-OF-SELECTION.
     WHEN p_list.
       PERFORM f_display_alv_list.
     WHEN p_grid.
+      PERFORM f_display_alv_grid.
     WHEN p_hier.
   ENDCASE.
