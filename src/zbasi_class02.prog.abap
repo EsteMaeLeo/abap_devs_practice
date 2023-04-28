@@ -26,7 +26,8 @@ CLASS lcl_student DEFINITION.
         EXPORTING nameout TYPE string,
 
       setstatus
-        CHANGING newstatus TYPE c,
+        IMPORTING status    TYPE c
+        CHANGING  newstatus TYPE c,
 
       get_status_text
         IMPORTING VALUE(statuscode) TYPE c
@@ -45,12 +46,16 @@ CLASS lcl_car DEFINITION
   PUBLIC SECTION.
     CLASS-DATA: numberofcars TYPE i.
 
+    CLASS-METHODS: class_constructor. " static constructor
+
     METHODS:
       constructor
         IMPORTING make        TYPE string
                   model       TYPE string
                   max_speed   TYPE i
                   numberseats TYPE i,
+
+      viewcar,
 
       setnumsetas
         IMPORTING numberseats TYPE i,
@@ -73,6 +78,8 @@ CLASS lcl_car DEFINITION
           numberseats TYPE i,
           speed       TYPE i,
           max_speed   TYPE i.
+
+    CLASS-DATA: carlog TYPE string.
 ENDCLASS.
 *&---------------------------------------------------------------------*
 *& CLASS Implementation
@@ -89,7 +96,7 @@ CLASS lcl_student IMPLEMENTATION.
 
   METHOD setstatus.
     IF newstatus CO 'MFNT'.
-      status = newstatus.
+      me->status = status.
       newstatus = '1'. "set newstatus to 1 was successfull
     ELSE.
       newstatus = '2'. "status not set
@@ -112,6 +119,11 @@ ENDCLASS.
 *&--------car----------------------------------------------------------*
 CLASS lcl_car IMPLEMENTATION.
 
+  METHOD class_constructor.
+    carlog = |Car class_contructor|.
+    WRITE carlog.
+  ENDMETHOD.
+
   METHOD constructor.
 
     me->make   = make.
@@ -120,6 +132,16 @@ CLASS lcl_car IMPLEMENTATION.
     me->max_speed = max_speed.
     me->numberofcars = me->numberofcars + 1.
 
+  ENDMETHOD.
+
+  METHOD viewcar.
+    WRITE : /,
+     me->make,
+     me->model,
+     me->numberseats,
+     me->speed,
+     me->max_speed,
+     me->numberofcars.
   ENDMETHOD.
 
   METHOD setnumsetas.
@@ -134,7 +156,7 @@ CLASS lcl_car IMPLEMENTATION.
 
     newspeed = COND i(
         WHEN me->speed >= max_speed THEN max_speed
-        WHEN me->speed < max_speed THEN me->speed ).
+        WHEN me->speed < max_speed THEN lv_temp ).
 
     me->speed = newspeed.
 
@@ -155,9 +177,9 @@ CLASS lcl_car IMPLEMENTATION.
   METHOD goslower.
 
     me->speed = me->speed - speed.
-    if me->speed < 0.
+    IF me->speed < 0.
       me->speed = 0.
-    endif.
+    ENDIF.
 
     newspeed = me->speed.
 
@@ -170,8 +192,50 @@ ENDCLASS.
 START-OF-SELECTION.
   BREAK-POINT.
   DATA(lo_student) = NEW lcl_student( ).
+  lo_student->setname( 'Charles').
+  DATA(l_status) = 'M'.
+  lo_student->setstatus( EXPORTING status    = l_status
+                         CHANGING  newstatus = l_status ).
   DATA(lv_gender) = lo_student->get_status_text('1').
 
+  " --- Old Ways Create Class ---
+  DATA lo_car_old TYPE REF TO lcl_car.
+  CREATE OBJECT lo_car_old
+    EXPORTING
+      make        = 'BMW'
+      model       = 'X6'
+      max_speed   = 260
+      numberseats = 6.
+
+  lo_car_old->viewcar( ).
+  ULINE.
+  lo_car_old->setnumsetas( 7 ).
+  lo_car_old->viewcar( ).
+
+  DATA(lv_resultspeed) = 0.
+  lo_car_old->gofaster( EXPORTING speed = 50
+                        IMPORTING  newspeed = lv_resultspeed ).
+
+  lo_car_old->viewcar( ).
+  WRITE:/, |Result goFaster: |, lv_resultspeed.
+  ULINE.
+
+  "FUNCTION METHOD USING RECEIVING
+  lo_car_old->goslower( EXPORTING speed = 5
+                        RECEIVING newspeed = lv_resultspeed ).
+  lo_car_old->viewcar( ).
+  WRITE:/, |Result goslower: |, lv_resultspeed.
+  ULINE.
+
+  "Assiging the value to variable
+  lv_resultspeed = lo_car_old->goslower( 10 ).
+  lo_car_old->viewcar( ).
+  WRITE:/, |Result goslower (Assign Function method): |, lv_resultspeed.
+  ULINE.
+
+
+
+  WRITE: /, |Number of cars created: |, lcl_car=>numberofcars. "Access tthe static attribute
   "---- NEW CAR ---
   DATA(lo_car) = NEW lcl_car( make = 'Audi'
                               model = 'A4'

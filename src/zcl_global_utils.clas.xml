@@ -63,11 +63,29 @@
      <DESCRIPT>Sfligh structure</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
+     <CMPNAME>C_TABLE_FLIGHT</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Flight</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
      <CMPNAME>C_TXT</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>.txt</DESCRIPT>
     </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GET_LIST_FIELDS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Pass structure and return list of fields</DESCRIPT>
+    </SEOCOMPOTX>
    </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_LIST_FIELDS</CMPNAME>
+     <SCONAME>STR_TABLE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Table Name</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
   </asx:values>
  </asx:abap>
 </abapGit>
