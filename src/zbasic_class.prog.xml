@@ -16,6 +16,57 @@
      <ENTRY>Program for classes</ENTRY>
      <LENGTH>19</LENGTH>
     </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_ADE</KEY>
+     <ENTRY>.</ENTRY>
+     <LENGTH>25</LENGTH>
+     <SPLIT>D</SPLIT>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_AFR</KEY>
+     <ENTRY>.</ENTRY>
+     <LENGTH>27</LENGTH>
+     <SPLIT>D</SPLIT>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_AIP</KEY>
+     <ENTRY>Get Connection ID</ENTRY>
+     <LENGTH>25</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_AIR</KEY>
+     <ENTRY>.</ENTRY>
+     <LENGTH>20</LENGTH>
+     <SPLIT>D</SPLIT>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_ALL</KEY>
+     <ENTRY>All SPFLI</ENTRY>
+     <LENGTH>17</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_CON</KEY>
+     <ENTRY>Show Connection ID</ENTRY>
+     <LENGTH>26</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_CONN</KEY>
+     <ENTRY>Connection ID</ENTRY>
+     <LENGTH>21</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_NUMF</KEY>
+     <ENTRY>Number Flights</ENTRY>
+     <LENGTH>22</LENGTH>
+    </item>
    </TPOOL>
   </asx:values>
  </asx:abap>

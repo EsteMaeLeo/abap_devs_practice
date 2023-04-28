@@ -17,6 +17,7 @@ public section.
   constants C_SPACE type CHAR1 value ' ' ##NO_TEXT.
   constants C_STR_FLIGHT type DD02L-TABNAME value 'ZSPFLI' ##NO_TEXT.
   constants C_TABLE_FLIGHT type DD02L-TABNAME value 'SPFLI' ##NO_TEXT.
+  constants C_STR_CONNID type DD02L-TABNAME value 'ZCONNID_REPORT' ##NO_TEXT.
 
   class-methods GET_LIST_FIELDS
     importing
