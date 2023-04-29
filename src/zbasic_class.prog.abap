@@ -22,7 +22,8 @@ SELECTION-SCREEN BEGIN OF BLOCK block2 WITH FRAME TITLE TEXT-t02.
 PARAMETERS: p_all  RADIOBUTTON GROUP alv USER-COMMAND ur1 DEFAULT 'X',
             p_conn RADIOBUTTON GROUP alv,
             p_numf RADIOBUTTON GROUP alv,
-            p_aip  RADIOBUTTON GROUP alv.
+            p_aip  RADIOBUTTON GROUP alv,
+            p_time RADIOBUTTON GROUP alv.
 SELECTION-SCREEN END OF BLOCK block2.
 
 SELECTION-SCREEN BEGIN OF BLOCK block3 WITH FRAME TITLE TEXT-t05.
@@ -44,17 +45,25 @@ CLASS lcl_flight_model DEFINITION.
 
     METHODS:
       constructor IMPORTING wa_tablename     TYPE dd02l-tabname,
+
       show_message IMPORTING l_msg1 TYPE any
                              l_msg2 TYPE any
                              l_msg3 TYPE any OPTIONAL,
+
       showalldata,
+
       showconniddata IMPORTING conn TYPE spfli-connid,
+
       numflightsto IMPORTING aircode           TYPE s_airport
                    RETURNING VALUE(numflights) TYPE i,
+
       getconnid IMPORTING airpfrom      TYPE s_fromairp
                           airpto        TYPE s_toairp
                 EXPORTING it_connid     TYPE tt_connid
-                RETURNING VALUE(connid) TYPE s_conn_id.
+                RETURNING VALUE(connid) TYPE s_conn_id,
+
+      getflighttime IMPORTING connid      TYPE s_conn_id
+                    RETURNING VALUE(time) TYPE spfli-fltime.
 
   PROTECTED SECTION.
 
@@ -180,6 +189,7 @@ CLASS lcl_flight_model IMPLEMENTATION.
 
       "return one record
       connid = gt_spfli_sorted[ airpfrom = airpfrom airpto = airpto ]-connid.
+      "return table with the matching keys
       it_connid = VALUE #( FOR wa_spfli IN gt_spfli_sorted
                            WHERE ( airpfrom = airpfrom AND airpto = airpto )
                                  ( wa_spfli-connid ) ).
@@ -190,6 +200,12 @@ CLASS lcl_flight_model IMPLEMENTATION.
       ENDIF.
 
     ENDIF.
+
+  ENDMETHOD.
+
+  METHOD getflighttime.
+
+    time = gt_spfli_sorted[ connid = connid ]-fltime.
 
   ENDMETHOD.
 
@@ -225,7 +241,7 @@ AT SELECTION-SCREEN OUTPUT.
           ENDIF.
         ENDLOOP.
       ENDIF.
-      IF p_conn EQ abap_true.
+      IF p_conn EQ abap_true OR p_time EQ abap_true.
         LOOP AT SCREEN.
           IF screen-group1 = 'MCN'.
             screen-active = 1.
@@ -295,4 +311,8 @@ START-OF-SELECTION.
                                                             airpto = p_afr
                                                   IMPORTING it_connid = it_connid ).
       lo_flight_mode->show_message( l_msg1 = |Connection ID| l_msg2 = lv_conid l_msg3 = it_connid ).
+
+    WHEN p_time.
+      DATA(lv_time) = lo_flight_mode->getflighttime( p_con ).
+      lo_flight_mode->show_message( l_msg1 = |Time flight| l_msg2 = lv_time ).
   ENDCASE.
