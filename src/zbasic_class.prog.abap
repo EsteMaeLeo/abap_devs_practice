@@ -23,7 +23,8 @@ PARAMETERS: p_all  RADIOBUTTON GROUP alv USER-COMMAND ur1 DEFAULT 'X',
             p_conn RADIOBUTTON GROUP alv,
             p_numf RADIOBUTTON GROUP alv,
             p_aip  RADIOBUTTON GROUP alv,
-            p_time RADIOBUTTON GROUP alv.
+            p_time RADIOBUTTON GROUP alv,
+            p_zpfl RADIOBUTTON GROUP alv.
 SELECTION-SCREEN END OF BLOCK block2.
 
 SELECTION-SCREEN BEGIN OF BLOCK block3 WITH FRAME TITLE TEXT-t05.
@@ -63,7 +64,10 @@ CLASS lcl_flight_model DEFINITION.
                 RETURNING VALUE(connid) TYPE s_conn_id,
 
       getflighttime IMPORTING connid      TYPE s_conn_id
-                    RETURNING VALUE(time) TYPE spfli-fltime.
+                    RETURNING VALUE(time) TYPE spfli-fltime,
+
+      getallconnectionfacts IMPORTING connid          TYPE s_conn_id
+                            RETURNING VALUE(wa_spfli) TYPE zspfli.
 
   PROTECTED SECTION.
 
@@ -202,11 +206,15 @@ CLASS lcl_flight_model IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
-
+*&---------------------------------------------------------------------*
   METHOD getflighttime.
 
     time = gt_spfli_sorted[ connid = connid ]-fltime.
 
+  ENDMETHOD.
+*&---------------------------------------------------------------------*
+  METHOD getallconnectionfacts.
+    wa_spfli = gt_spfli_sorted[ connid = connid ].
   ENDMETHOD.
 
 ENDCLASS.
@@ -241,7 +249,7 @@ AT SELECTION-SCREEN OUTPUT.
           ENDIF.
         ENDLOOP.
       ENDIF.
-      IF p_conn EQ abap_true OR p_time EQ abap_true.
+      IF p_conn EQ abap_true OR p_time EQ abap_true OR p_zpfl EQ abap_true.
         LOOP AT SCREEN.
           IF screen-group1 = 'MCN'.
             screen-active = 1.
@@ -315,4 +323,7 @@ START-OF-SELECTION.
     WHEN p_time.
       DATA(lv_time) = lo_flight_mode->getflighttime( p_con ).
       lo_flight_mode->show_message( l_msg1 = |Time flight| l_msg2 = lv_time ).
+    WHEN p_zpfl.
+      DATA(wa_zspli) = lo_flight_mode->getallconnectionfacts( p_con ).
+      lo_flight_mode->show_message( l_msg1 = |Connection Facts| l_msg2 = wa_zspli ).
   ENDCASE.

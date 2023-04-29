@@ -67,6 +67,18 @@
      <ENTRY>Number Flights</ENTRY>
      <LENGTH>22</LENGTH>
     </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_TIME</KEY>
+     <ENTRY>Flight Time</ENTRY>
+     <LENGTH>19</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_ZPFL</KEY>
+     <ENTRY>Connection Details</ENTRY>
+     <LENGTH>26</LENGTH>
+    </item>
    </TPOOL>
   </asx:values>
  </asx:abap>

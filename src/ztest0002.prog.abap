@@ -42,7 +42,8 @@ CLASS lcl_practice DEFINITION
     METHODS: m_inline,
       using_new,
       using_value_itab_wa,
-      using_for.
+      using_for,
+      using_filter1.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -281,7 +282,12 @@ CLASS lcl_practice IMPLEMENTATION.
 
     DATA(it_persons_lond) = VALUE tt_pers_london( FOR ls_persons IN it_persons WHERE ( city = 'London' )
                                                   ( ls_persons-name ) ).
-    DATA it_per_filter TYPE tt_persons.
+
+
+  ENDMETHOD.
+
+  METHOD using_filter1.
+
     DATA carrid TYPE spfli-carrid VALUE 'LH'.
     cl_demo_input=>add_field( CHANGING field = carrid ).
     DATA cityfrom TYPE spfli-cityfrom VALUE 'Frankfurt'.
@@ -309,7 +315,6 @@ CLASS lcl_practice IMPLEMENTATION.
                         cityfrom = CONV #( to_upper( cityfrom ) ) ).
 
     ASSERT lines( extract ) + lines( rest ) = lines( spfli_tab ).
-
   ENDMETHOD.
 
 ENDCLASS.
@@ -326,3 +331,4 @@ lv_new->m_inline(  ).
 lv_new->using_new(  ).
 lv_new->using_value_itab_wa(  ).
 lv_new->using_for(  ).
+lv_new->using_filter1(  ).
