@@ -21,6 +21,22 @@ FORM f_modify_screen.
       MODIFY SCREEN.
     ENDLOOP.
   ENDIF.
+
+  IF p_buff EQ abap_true.
+    LOOP AT SCREEN.
+      IF screen-group1 = 'GR3'.
+        screen-active = 1.
+      ENDIF.
+      MODIFY SCREEN.
+    ENDLOOP.
+  ELSE.
+    LOOP AT SCREEN.
+      IF screen-group1 = 'GR3'.
+        screen-active = 0.
+      ENDIF.
+      MODIFY SCREEN.
+    ENDLOOP.
+  ENDIF.
 ENDFORM.
 *&---------------------------------------------------------------------*
 *form for F4 files in the application server
@@ -129,8 +145,7 @@ ENDFORM.
 *&---------------------------------------------------------------------*
 FORM f_opendataset USING us_file TYPE string.
 
-  DATA: lv_line  TYPE string,
-        lv_space TYPE string.
+  DATA: lv_line  TYPE string.
 
   DATA(lv_lowercase_path) = to_lower( us_file ).
 
@@ -145,30 +160,7 @@ FORM f_opendataset USING us_file TYPE string.
           IF sy-subrc <> 0.
             EXIT.
           ELSE.
-            SPLIT lv_line AT zcl_global_utils=>c_comma INTO gwa_person-id
-                                                            gwa_person-code_electoral
-                                                            lv_space
-                                                            gwa_person-expire_date
-                                                            gwa_person-committee_vote
-                                                            gwa_person-name
-                                                            gwa_person-first_last_name
-                                                            gwa_person-second_last_name.
-
-            gwa_person-mandt = sy-mandt.
-
-            "NEXT CODE INSTED USING IF string CA '#'.IF CA AND REPLACE '#' WITH 'N' in v_string.
-            "USING COND AND REPLACE STRING FUNCTION
-            gwa_person-first_last_name = COND #(
-                                                WHEN contains( val = gwa_person-first_last_name sub = zcl_global_utils=>c_hastag )
-                                                  THEN replace( val = gwa_person-first_last_name sub = zcl_global_utils=>c_hastag with = 'N' occ = 1 )
-                                                  ELSE gwa_person-first_last_name ).
-
-            gwa_person-second_last_name = COND #(
-                                    WHEN contains( val = gwa_person-second_last_name sub = zcl_global_utils=>c_hastag )
-                                      THEN replace( val = gwa_person-second_last_name sub = zcl_global_utils=>c_hastag with = 'N' occ = 1 )
-                                      ELSE gwa_person-second_last_name ).
-
-            APPEND gwa_person TO got_person.
+            PERFORM f_split_line USING lv_line.
             "WRITE: / lv_line.
           ENDIF.
         ENDDO.
@@ -177,6 +169,38 @@ FORM f_opendataset USING us_file TYPE string.
     CATCH cx_root INTO DATA(e_txt).
       WRITE: / e_txt->get_text( ).
   ENDTRY.
+ENDFORM.
+*&---------------------------------------------------------------------*
+FORM f_split_line USING us_line.
+
+  DATA:  lv_space TYPE string.
+
+  CLEAR gwa_person.
+  SPLIT us_line AT zcl_global_utils=>c_comma INTO gwa_person-id
+                                                           gwa_person-code_electoral
+                                                           lv_space
+                                                           gwa_person-expire_date
+                                                           gwa_person-committee_vote
+                                                           gwa_person-name
+                                                           gwa_person-first_last_name
+                                                           gwa_person-second_last_name.
+
+  gwa_person-mandt = sy-mandt.
+
+  "NEXT CODE INSTED USING IF string CA '#'.IF CA AND REPLACE '#' WITH 'N' in v_string.
+  "USING COND AND REPLACE STRING FUNCTION
+  gwa_person-first_last_name = COND #(
+                                      WHEN contains( val = gwa_person-first_last_name sub = zcl_global_utils=>c_hastag )
+                                        THEN replace( val = gwa_person-first_last_name sub = zcl_global_utils=>c_hastag with = 'N' occ = 1 )
+                                        ELSE gwa_person-first_last_name ).
+
+  gwa_person-second_last_name = COND #(
+                          WHEN contains( val = gwa_person-second_last_name sub = zcl_global_utils=>c_hastag )
+                            THEN replace( val = gwa_person-second_last_name sub = zcl_global_utils=>c_hastag with = 'N' occ = 1 )
+                            ELSE gwa_person-second_last_name ).
+
+  APPEND gwa_person TO got_person.
+
 ENDFORM.
 *&---------------------------------------------------------------------*
 FORM f_opendata_class USING us_file TYPE string.
@@ -272,8 +296,9 @@ ENDFORM.
 *&---------------------------------------------------------------------*
 FORM f_open_deskfile.
 
-  DATA: gt_line TYPE TABLE OF string.
-  DATA lv_file TYPE string.
+  DATA: gt_line TYPE TABLE OF string,
+        lv_file TYPE string,
+        lv_line TYPE string.
 
   IF p_file IS NOT INITIAL.
 
@@ -306,6 +331,14 @@ FORM f_open_deskfile.
         not_supported_by_gui    = 17
         error_no_gui            = 18
         OTHERS                  = 19 ).
+
+    IF sy-subrc EQ 0.
+      FREE got_person.
+      LOOP AT gt_line ASSIGNING FIELD-SYMBOL(<fs_line>).
+        PERFORM f_split_line USING <fs_line>.
+      ENDLOOP.
+
+    ENDIF.
 
   ELSE.
     MESSAGE 'Path is empty' TYPE 'I'.

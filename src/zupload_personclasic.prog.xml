@@ -53,6 +53,18 @@
      <LENGTH>40</LENGTH>
     </item>
     <item>
+     <ID>I</ID>
+     <KEY>T07</KEY>
+     <ENTRY>Max lines</ENTRY>
+     <LENGTH>19</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>T08</KEY>
+     <ENTRY>Max lines to upload</ENTRY>
+     <LENGTH>29</LENGTH>
+    </item>
+    <item>
      <ID>R</ID>
      <ENTRY>Upload files People</ENTRY>
      <LENGTH>19</LENGTH>
@@ -74,6 +86,12 @@
      <KEY>P_LFILE</KEY>
      <ENTRY>Logical File Name</ENTRY>
      <LENGTH>25</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_LINES</KEY>
+     <ENTRY>Max lines</ENTRY>
+     <LENGTH>17</LENGTH>
     </item>
     <item>
      <ID>S</ID>
