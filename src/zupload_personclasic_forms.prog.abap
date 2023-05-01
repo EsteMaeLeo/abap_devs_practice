@@ -23,6 +23,32 @@ FORM f_modify_screen.
   ENDIF.
 ENDFORM.
 *&---------------------------------------------------------------------*
+*form for F4 files in the application server
+FORM f_f4_appserver USING    us_path TYPE string
+                    CHANGING ch_file TYPE string.
+*F4 help for file name on SAP application server
+  DATA: lv_path TYPE string.
+  IF us_path IS INITIAL.
+    "default path in the server.
+    lv_path = TEXT-p01.
+  ELSE.
+    lv_path = us_path.
+  ENDIF.
+
+  CALL FUNCTION '/SAPDMC/LSM_F4_SERVER_FILE'
+    EXPORTING
+      directory        = lv_path
+    IMPORTING
+      serverfile       = ch_file
+    EXCEPTIONS
+      canceled_by_user = 1
+      OTHERS           = 2.
+  IF sy-subrc <> 0.
+    MESSAGE 'Error Message' TYPE 'I'.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
 FORM f_open_appfile.
 
   DATA: lv_file TYPE string,
@@ -37,16 +63,15 @@ FORM f_open_appfile.
 
   PERFORM f_opendataset USING lv_path.
 
-  PERFORM f_writedata_set USING got_person
-                                lv_file.
+  IF p_writ EQ abap_true.
 
-  PERFORM f_opendata_class USING g_filepath.
-
-ENDFORM.
-*&---------------------------------------------------------------------*
-FORM f_open_deskfile.
+    PERFORM f_writedata_set USING got_person
+                                  lv_file.
+  ENDIF.
+  "PERFORM f_opendata_class USING g_filepath.
 
 ENDFORM.
+
 *&---------------------------------------------------------------------*
 "Get file name using the logica path
 FORM f_get_filename USING us_path    TYPE filename-fileintern
@@ -100,32 +125,7 @@ FORM f_get_path USING    us_file TYPE string
   ENDIF.
 
 ENDFORM.
-*&---------------------------------------------------------------------*
-*form for F4 files in the application server
-FORM f_f4_appserver USING    us_path TYPE string
-                    CHANGING ch_file TYPE string.
-*F4 help for file name on SAP application server
-  DATA: lv_path TYPE string.
-  IF us_path IS INITIAL.
-    "default path in the server.
-    lv_path = TEXT-p01.
-  ELSE.
-    lv_path = us_path.
-  ENDIF.
 
-  CALL FUNCTION '/SAPDMC/LSM_F4_SERVER_FILE'
-    EXPORTING
-      directory        = lv_path
-    IMPORTING
-      serverfile       = ch_file
-    EXCEPTIONS
-      canceled_by_user = 1
-      OTHERS           = 2.
-  IF sy-subrc <> 0.
-    MESSAGE 'Error Message' TYPE 'I'.
-  ENDIF.
-
-ENDFORM.
 *&---------------------------------------------------------------------*
 FORM f_opendataset USING us_file TYPE string.
 
@@ -231,4 +231,83 @@ FORM f_writedata_set USING us_table TYPE zot_uploadpersoncr
       WRITE: / e_txt->get_text( ).
   ENDTRY.
 
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  F_DIALOG_DESKTOP
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM f_dialog_desktop .
+  DATA: lt_tab    TYPE filetable,
+        lv_count  TYPE i,
+        lv_action TYPE i.
+
+  cl_gui_frontend_services=>file_open_dialog( EXPORTING window_title = 'Select File'
+                                                        initial_directory = 'D:\code\data'
+                                              CHANGING  file_table = lt_tab
+                                                        rc = lv_count
+                                                        user_action = lv_action
+                                              EXCEPTIONS file_open_dialog_failed = 1
+                                                         cntl_error = 2
+                                                         error_no_gui = 3
+                                                         not_supported_by_gui = 4
+                                                         OTHERS = 5 ).
+  IF sy-subrc <> 0.
+* Implement suitable error handling here
+    MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+           WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+  ELSE.
+    IF lv_action NE 9.
+      READ TABLE lt_tab ASSIGNING FIELD-SYMBOL(<fs_file>) INDEX 1.
+      p_file = <fs_file>-filename.
+    ELSE.
+      MESSAGE 'User Canceled' TYPE 'I'.
+    ENDIF.
+  ENDIF.
+ENDFORM.
+
+*&---------------------------------------------------------------------*
+FORM f_open_deskfile.
+
+  DATA: gt_line TYPE TABLE OF string.
+  DATA lv_file TYPE string.
+
+  IF p_file IS NOT INITIAL.
+
+    lv_file = p_file.
+
+    cl_gui_frontend_services=>gui_upload(
+      EXPORTING
+        filename                = lv_file
+        filetype                = 'ASC'
+        has_field_separator     = abap_true
+      CHANGING
+        data_tab                = gt_line
+      EXCEPTIONS
+        file_open_error         = 1
+        file_read_error         = 2
+        no_batch                = 3
+        gui_refuse_filetransfer = 4
+        invalid_type            = 5
+        no_authority            = 6
+        unknown_error           = 7
+        bad_data_format         = 8
+        header_not_allowed      = 9
+        separator_not_allowed   = 10
+        header_too_long         = 11
+        unknown_dp_error        = 12
+        access_denied           = 13
+        dp_out_of_memory        = 14
+        disk_full               = 15
+        dp_timeout              = 16
+        not_supported_by_gui    = 17
+        error_no_gui            = 18
+        OTHERS                  = 19 ).
+
+  ELSE.
+    MESSAGE 'Path is empty' TYPE 'I'.
+  ENDIF.
 ENDFORM.
