@@ -19,6 +19,7 @@ public section.
   constants C_TABLE_FLIGHT type DD02L-TABNAME value 'SPFLI' ##NO_TEXT.
   constants C_STR_CONNID type DD02L-TABNAME value 'ZCONNID_REPORT' ##NO_TEXT.
   constants C_STR_UPPERSON type DD02L-TABNAME value 'ZUPLOADPERSONCR' ##NO_TEXT.
+  constants C_TABLE_FLIGHTS type DD02L-TABNAME value 'SFLIGHT' ##NO_TEXT.
 
   class-methods GET_LIST_FIELDS
     importing

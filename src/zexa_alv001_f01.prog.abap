@@ -16,11 +16,40 @@
 *----------------------------------------------------------------------*
 FORM f_build_fieldcat CHANGING ch_fieldcat TYPE slis_t_fieldcat_alv.
 
+
+  DATA: lv_structure TYPE dd02l-tabname,
+        lv_tabname   TYPE slis_tabname.
+
+  CASE abap_true.
+    WHEN p_grid.
+      lv_structure = zcl_global_utils=>c_str_flight. " custom SPFLI catalog from dictionary
+      lv_tabname   = c_flight_field.
+    WHEN p_hier.
+      lv_structure = zcl_global_utils=>c_table_flight. " standard SPFLI from catalog dictionary
+      lv_tabname   = c_header.
+  ENDCASE.
+
+
   CASE abap_true.
     WHEN p_normal.
       PERFORM f_catprogram CHANGING ch_fieldcat.
     WHEN p_all.
-      PERFORM f_alv_merge_cat CHANGING ch_fieldcat.
+      IF p_grid EQ abap_true.
+        PERFORM f_alv_merge_cat USING    lv_structure
+                                         lv_tabname
+                                CHANGING ch_fieldcat.
+      ELSEIF p_hier EQ abap_true.
+        PERFORM f_alv_merge_cat USING    lv_structure
+                                         lv_tabname
+                                CHANGING ch_fieldcat.
+
+        lv_tabname   = c_item. "move table items
+        lv_structure = zcl_global_utils=>c_table_flights.
+        PERFORM f_alv_merge_cat USING    lv_structure
+                                         lv_tabname
+                                CHANGING ch_fieldcat.
+
+      ENDIF.
   ENDCASE.
 
 ENDFORM.
@@ -65,15 +94,17 @@ ENDFORM.
 *  -->  p1        text
 *  <--  p2        text
 *----------------------------------------------------------------------*
-FORM f_alv_merge_cat CHANGING ch_fieldcat TYPE slis_t_fieldcat_alv.
+FORM f_alv_merge_cat USING    us_structure TYPE dd02l-tabname
+                              us_tabname   TYPE slis_tabname
+                     CHANGING ch_fieldcat TYPE slis_t_fieldcat_alv.
 
 *merge FIELD catalog
-  DATA lv_structure TYPE dd02l-tabname.
-  lv_structure = zcl_global_utils=>c_str_flight.
 
   CALL FUNCTION 'REUSE_ALV_FIELDCATALOG_MERGE'
     EXPORTING
-      i_structure_name       = lv_structure
+      i_program_name         = sy-repid
+      i_internal_tabname     = us_tabname
+      i_structure_name       = us_structure
     CHANGING
       ct_fieldcat            = ch_fieldcat
     EXCEPTIONS
@@ -231,7 +262,12 @@ FORM f_get_data .
     WHEN p_normal.
       PERFORM f_data_program CHANGING gt_flights.
     WHEN p_all.
-      PERFORM f_data_allfields CHANGING  gt_flights_field.
+      IF p_grid EQ abap_true.
+        PERFORM f_data_allfields CHANGING  gt_flights_field.
+      ELSEIF p_hier EQ abap_true.
+        PERFORM f_data_hier CHANGING gt_header
+                                     gt_item.
+      ENDIF.
   ENDCASE.
 
 ENDFORM.
@@ -277,6 +313,36 @@ FORM f_data_allfields CHANGING us_flights TYPE tt_flights_field.
     FROM spfli
     INTO TABLE us_flights
    WHERE carrid IN so_carr.
+
+  IF sy-subrc EQ 0.
+
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  f_data_allfields
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM f_data_hier CHANGING ch_header TYPE tt_header
+                          ch_item   TYPE tt_item.
+
+  SELECT *
+      FROM spfli
+      INTO TABLE ch_header
+     WHERE carrid IN so_carr.
+
+  IF sy-subrc EQ 0.
+
+  ENDIF.
+
+
+  SELECT *
+  FROM sflight
+  INTO TABLE ch_item
+ WHERE carrid IN so_carr.
 
   IF sy-subrc EQ 0.
 
@@ -519,7 +585,7 @@ FORM top_of_page.
         wa_listheader TYPE slis_listheader.
 
   CASE abap_true.
-    WHEN p_list.
+    WHEN p_list OR p_hier.
       WRITE: / |Hour|, sy-uzeit ENVIRONMENT TIME FORMAT,
              / |User|, sy-uname.
     WHEN p_grid.
@@ -542,4 +608,74 @@ FORM top_of_page.
         .
 
   ENDCASE.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  F_DISPLAY_ALV_HIER
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM f_display_alv_hier .
+
+  DATA: ls_keyinfo  TYPE  slis_keyinfo_alv.
+  DATA: it_event  TYPE slis_t_event.
+
+  PERFORM f_add_eventes CHANGING it_event.
+
+  ls_keyinfo-header01 = 'CARRID'.
+  ls_keyinfo-header02 = 'CONNID'.
+
+  ls_keyinfo-item01 = 'CARRID'.
+  ls_keyinfo-item02 = 'CONNID'.
+
+  CALL FUNCTION 'REUSE_ALV_HIERSEQ_LIST_DISPLAY'
+    EXPORTING
+*     I_INTERFACE_CHECK  = ' '
+      i_callback_program = sy-repid
+*     I_CALLBACK_PF_STATUS_SET       = ' '
+*     I_CALLBACK_USER_COMMAND        = ' '
+*     IS_LAYOUT          =
+      it_fieldcat        = gt_fieldcat
+*     IT_EXCLUDING       =
+*     IT_SPECIAL_GROUPS  =
+*     IT_SORT            =
+*     IT_FILTER          =
+*     IS_SEL_HIDE        =
+*     I_SCREEN_START_COLUMN          = 0
+*     I_SCREEN_START_LINE            = 0
+*     I_SCREEN_END_COLUMN            = 0
+*     I_SCREEN_END_LINE  = 0
+*     I_DEFAULT          = 'X'
+*     I_SAVE             = ' '
+*     IS_VARIANT         =
+      it_events          = it_event
+*     IT_EVENT_EXIT      =
+      i_tabname_header   = c_header
+      i_tabname_item     = c_item
+*     I_STRUCTURE_NAME_HEADER        =
+*     I_STRUCTURE_NAME_ITEM          =
+      is_keyinfo         = ls_keyinfo
+*     IS_PRINT           =
+*     IS_REPREP_ID       =
+*     I_BYPASSING_BUFFER =
+*     I_BUFFER_ACTIVE    =
+*     IR_SALV_HIERSEQ_ADAPTER        =
+*     IT_EXCEPT_QINFO    =
+*     I_SUPPRESS_EMPTY_DATA          = ABAP_FALSE
+* IMPORTING
+*     E_EXIT_CAUSED_BY_CALLER        =
+*     ES_EXIT_CAUSED_BY_USER         =
+    TABLES
+      t_outtab_header    = gt_header
+      t_outtab_item      = gt_item
+    EXCEPTIONS
+      program_error      = 1
+      OTHERS             = 2.
+  IF sy-subrc <> 0.
+* Implement suitable error handling here
+    MESSAGE 'ERROR on Display HIERSEQ_LIST_DISPLAY' TYPE 'E'.
+  ENDIF.
+
 ENDFORM.

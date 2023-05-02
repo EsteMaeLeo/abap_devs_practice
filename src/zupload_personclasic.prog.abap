@@ -24,7 +24,7 @@ AT SELECTION-SCREEN ON VALUE-REQUEST FOR p_file.
   PERFORM f_dialog_desktop.
 
 START-OF-SELECTION.
-  BREAK-POINT.
+
   CASE abap_true.
     WHEN p_server.
       PERFORM f_process_appfile.
