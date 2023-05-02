@@ -5,11 +5,14 @@ TABLES: zuploadpersoncr.
 
 TYPES: st_person TYPE zuploadpersoncr.
 
-DATA gwa_person TYPE zuploadpersoncr.
+DATA: gwa_person TYPE zuploadpersoncr,
+      gwa_layout TYPE slis_layout_alv.
 
-DATA: gst_person TYPE zst_uploadpersoncr,
-      got_person TYPE zot_uploadpersoncr,
-      ght_person TYPE zht_uploadpersoncr.
+DATA: gt_event    TYPE slis_t_event,
+      gt_fieldcat TYPE slis_t_fieldcat_alv,
+      gst_person  TYPE zst_uploadpersoncr,
+      got_person  TYPE zot_uploadpersoncr,
+      ght_person  TYPE zht_uploadpersoncr.
 
 DATA: g_filepath TYPE string.
 

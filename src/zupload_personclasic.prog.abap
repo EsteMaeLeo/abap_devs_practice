@@ -31,3 +31,12 @@ START-OF-SELECTION.
     WHEN p_desk.
       PERFORM f_process_desk.
   ENDCASE.
+
+  "display ALV
+  PERFORM f_alv_merge_cat CHANGING gt_fieldcat.
+
+  PERFORM f_add_eventes CHANGING gt_event.
+
+  PERFORM f_list_flights_dict_grid USING got_person
+                                         gwa_layout
+                                         gt_event.

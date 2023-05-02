@@ -69,6 +69,7 @@ FORM f_process_appfile.
 
   DATA: lv_file TYPE string,
         lv_path TYPE string.
+
   "get file name
   PERFORM f_get_filename USING    p_lfile
                          CHANGING lv_file.
@@ -84,8 +85,44 @@ FORM f_process_appfile.
     PERFORM f_writedata_set USING got_person
                                   lv_file.
   ENDIF.
+
+  CALL FUNCTION 'ENQUEUE_EZUPLOADPERSONCR'
+*   EXPORTING
+*     MODE_ZUPLOADPERSONCR       = 'E'
+*     ID                         =
+*     X_ID                       = ' '
+*     _SCOPE                     = '2'
+*     _WAIT                      = ' '
+*     _COLLECT                   = ' '
+*   EXCEPTIONS
+*     FOREIGN_LOCK               = 1
+*     SYSTEM_FAILURE             = 2
+*     OTHERS                     = 3
+    .
+  IF sy-subrc <> 0.
+* Implement suitable error handling here
+  ENDIF.
+
+  IF p_dele EQ abap_true. " select delte all entries table
+    PERFORM f_delete_all.
+  ENDIF.
+
+
+  IF p_crea EQ abap_true.
+    PERFORM f_insert_data.
+  ENDIF.
+
   "PERFORM f_opendata_class USING g_filepath.
 
+  CALL FUNCTION 'DEQUEUE_EZUPLOADPERSONCR'
+* EXPORTING
+*   MODE_ZUPLOADPERSONCR       = 'E'
+*   ID                         =
+*   X_ID                       = ' '
+*   _SCOPE                     = '3'
+*   _SYNCHRON                  = ' '
+*   _COLLECT                   = ' '
+    .
 ENDFORM.
 
 *&---------------------------------------------------------------------*
@@ -465,7 +502,20 @@ FORM f_insert_data.
     "Choose using MODIFY
     "Inserts one or more rows into a database table specified or overwrites existing ones.
     MODIFY zuploadpersoncr FROM TABLE @got_person.
+    IF sy-subrc EQ 0.
 
+      CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+        EXPORTING
+          wait   = abap_true
+        IMPORTING
+          return = ls_return.
+
+    ELSE.
+      MESSAGE 'Error on create entries' TYPE 'I'.
+      CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'
+        IMPORTING
+          return = ls_return.
+    ENDIF.
   ENDIF.
 ENDFORM.
 
@@ -501,6 +551,164 @@ FORM f_writedata_desktop USING us_table TYPE zot_uploadpersoncr.
       ).
   ELSE.
     MESSAGE 'User Canceled' TYPE 'I'.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  F_ALV_MERGE_CAT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM f_alv_merge_cat CHANGING ch_fieldcat TYPE slis_t_fieldcat_alv.
+
+*merge FIELD catalog
+  DATA lv_structure TYPE dd02l-tabname.
+  lv_structure = zcl_global_utils=>c_str_upperson.
+
+  CALL FUNCTION 'REUSE_ALV_FIELDCATALOG_MERGE'
+    EXPORTING
+      i_structure_name       = lv_structure
+    CHANGING
+      ct_fieldcat            = ch_fieldcat
+    EXCEPTIONS
+      inconsistent_interface = 1
+      program_error          = 2
+      OTHERS                 = 3.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  F_BUILD_LAYOUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM f_build_layout CHANGING ch_layout TYPE slis_layout_alv.
+
+  ch_layout-zebra = abap_true.
+  ch_layout-edit = abap_false.
+
+ENDFORM.
+*----------------------------------------------------------------------*
+*Create form standard for ALV
+FORM user_command  USING r_ucomm LIKE sy-ucomm
+                                   rs_selfield TYPE slis_selfield.
+  CASE r_ucomm.
+    WHEN '&INF'.
+      MESSAGE 'Person Details' TYPE 'I'.
+  ENDCASE.
+ENDFORM.
+*set new pf ststus copy the firm
+FORM set_pf_status USING rt_extab TYPE slis_t_extab.
+  SET PF-STATUS 'ZSTANDARD'.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  F_ADD_EVENTES
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      <--P_IT_EVENT  text
+*----------------------------------------------------------------------*
+FORM f_add_eventes  CHANGING ch_event TYPE slis_t_event .
+
+  DATA: wa_events TYPE slis_alv_event.
+
+  wa_events-name = 'TOP_OF_PAGE'.
+  wa_events-form = 'TOP_OF_PAGE'.
+  INSERT wa_events INTO TABLE ch_event.
+
+  "You can get all event using the FM  CALL FUNCTION 'REUSE_ALV_EVENTS_GET'
+
+ENDFORM.
+FORM top_of_page.
+
+  DATA: it_listheader TYPE slis_t_listheader,
+        wa_listheader TYPE slis_listheader.
+
+  wa_listheader-typ = |H|.
+  wa_listheader-info = |Person Uploaded|.
+  INSERT wa_listheader INTO TABLE it_listheader.
+
+  CLEAR wa_listheader.
+  wa_listheader-typ = |S|.
+  wa_listheader-info = | User: { sy-uname } |.
+  INSERT wa_listheader INTO TABLE it_listheader.
+
+  CALL FUNCTION 'REUSE_ALV_COMMENTARY_WRITE'
+    EXPORTING
+      it_list_commentary = it_listheader
+*     I_LOGO             =
+*     I_END_OF_LIST_GRID =
+*     I_ALV_FORM         =
+    .
+ENDFORM.
+
+*&---------------------------------------------------------------------*
+*&      Form  F_LIST_FLIGHTS_DICT_GRID
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      <--P_GT_FLIGHTS_FIELD  text
+*----------------------------------------------------------------------*
+FORM f_list_flights_dict_grid  USING us_personcr TYPE zot_uploadpersoncr
+                                     us_layout  TYPE slis_layout_alv
+                                     us_event   TYPE slis_t_event.
+  gst_person[] = got_person[].
+  CALL FUNCTION 'REUSE_ALV_GRID_DISPLAY'
+    EXPORTING
+*     I_INTERFACE_CHECK        = ' '
+*     I_BYPASSING_BUFFER       = ' '
+*     I_BUFFER_ACTIVE          = ' '
+      i_callback_program       = sy-repid
+      i_callback_pf_status_set = 'SET_PF_STATUS '
+      i_callback_user_command  = 'USER_COMMAND'
+*     I_CALLBACK_TOP_OF_PAGE   = ' '
+*     I_CALLBACK_HTML_TOP_OF_PAGE       = ' '
+*     I_CALLBACK_HTML_END_OF_LIST       = ' '
+*     I_STRUCTURE_NAME         =
+*     I_BACKGROUND_ID          = ' '
+*     I_GRID_TITLE             =
+*     I_GRID_SETTINGS          =
+      is_layout                = us_layout
+      it_fieldcat              = gt_fieldcat
+*     IT_EXCLUDING             =
+*     IT_SPECIAL_GROUPS        =
+*     IT_SORT                  =
+*     IT_FILTER                =
+*     IS_SEL_HIDE              =
+*     I_DEFAULT                = 'X'
+*     I_SAVE                   = ' '
+*     IS_VARIANT               =
+      it_events                = us_event
+*     IT_EVENT_EXIT            =
+*     IS_PRINT                 =
+*     IS_REPREP_ID             =
+*     I_SCREEN_START_COLUMN    = 0
+*     I_SCREEN_START_LINE      = 0
+*     I_SCREEN_END_COLUMN      = 0
+*     I_SCREEN_END_LINE        = 0
+*     I_HTML_HEIGHT_TOP        = 0
+*     I_HTML_HEIGHT_END        = 0
+*     IT_ALV_GRAPHICS          =
+*     IT_HYPERLINK             =
+*     IT_ADD_FIELDCAT          =
+*     IT_EXCEPT_QINFO          =
+*     IR_SALV_FULLSCREEN_ADAPTER        =
+* IMPORTING
+*     E_EXIT_CAUSED_BY_CALLER  =
+*     ES_EXIT_CAUSED_BY_USER   =
+    TABLES
+      t_outtab                 = gst_person
+    EXCEPTIONS
+      program_error            = 1
+      OTHERS                   = 2.
+  IF sy-subrc <> 0.
+    MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+               WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
   ENDIF.
 
 ENDFORM.
