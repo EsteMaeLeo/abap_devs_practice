@@ -27,7 +27,7 @@ START-OF-SELECTION.
   BREAK-POINT.
   CASE abap_true.
     WHEN p_server.
-      PERFORM f_open_appfile.
+      PERFORM f_process_appfile.
     WHEN p_desk.
-      PERFORM f_open_deskfile.
+      PERFORM f_process_desk.
   ENDCASE.

@@ -65,7 +65,7 @@ FORM f_f4_appserver USING    us_path TYPE string
 
 ENDFORM.
 *&---------------------------------------------------------------------*
-FORM f_open_appfile.
+FORM f_process_appfile.
 
   DATA: lv_file TYPE string,
         lv_path TYPE string.
@@ -292,6 +292,24 @@ FORM f_dialog_desktop .
     ENDIF.
   ENDIF.
 ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  F_PROCESS_DESK
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM f_process_desk .
+
+  PERFORM f_open_deskfile.
+
+  IF p_writ EQ abap_true.
+    PERFORM f_writedata_desktop USING got_person.
+  ENDIF.
+
+  PERFORM f_upload_table.
+ENDFORM.
 
 *&---------------------------------------------------------------------*
 FORM f_open_deskfile.
@@ -343,4 +361,146 @@ FORM f_open_deskfile.
   ELSE.
     MESSAGE 'Path is empty' TYPE 'I'.
   ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Form  F_UPLOAD_TABLE
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*  -->  p1        text
+*  <--  p2        text
+*----------------------------------------------------------------------*
+FORM f_upload_table .
+  "set lock table
+  CALL FUNCTION 'ENQUEUE_EZUPLOADPERSONCR'
+*   EXPORTING
+*     MODE_ZUPLOADPERSONCR       = 'E'
+*     ID                         =
+*     X_ID                       = ' '
+*     _SCOPE                     = '2'
+*     _WAIT                      = ' '
+*     _COLLECT                   = ' '
+*   EXCEPTIONS
+*     FOREIGN_LOCK               = 1
+*     SYSTEM_FAILURE             = 2
+*     OTHERS                     = 3
+    .
+  IF sy-subrc <> 0.
+* Implement suitable error handling here
+  ENDIF.
+
+  IF p_dele EQ abap_true. " select delte all entries table
+    PERFORM f_delete_all.
+  ENDIF.
+
+  IF p_crea EQ abap_true.
+    PERFORM f_insert_data.
+  ENDIF.
+
+  CALL FUNCTION 'DEQUEUE_EZUPLOADPERSONCR'
+* EXPORTING
+*   MODE_ZUPLOADPERSONCR       = 'E'
+*   ID                         =
+*   X_ID                       = ' '
+*   _SCOPE                     = '3'
+*   _SYNCHRON                  = ' '
+*   _COLLECT                   = ' '
+    .
+
+ENDFORM.
+
+*&---------------------------------------------------------------------*
+FORM f_delete_all.
+
+  DATA ls_return TYPE bapiret2.
+  DATA message TYPE string.
+
+  DELETE FROM zuploadpersoncr." WHERE id LIKE '%'.
+  IF sy-subrc NE 0.
+
+    message = |Lines deleted: { sy-dbcnt } Error when try to delete all table|.
+    MESSAGE message TYPE 'I'.
+    CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'
+      IMPORTING
+        return = ls_return.
+
+  ELSE.
+    CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+      EXPORTING
+        wait   = abap_true
+      IMPORTING
+        return = ls_return.
+  ENDIF.
+
+ENDFORM.
+
+*&---------------------------------------------------------------------*
+FORM f_insert_data.
+
+  DATA lt_person TYPE zot_uploadpersoncr.
+  DATA ls_return TYPE bapiret2.
+
+  IF p_buff EQ abap_true.
+    DATA(lv_totalines) = lines( got_person ).
+    p_lines = p_lines + 1.
+    DELETE got_person FROM p_lines TO lv_totalines.
+    MODIFY zuploadpersoncr FROM TABLE @got_person.
+
+    IF sy-subrc EQ 0.
+
+      CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+        EXPORTING
+          wait   = abap_true
+        IMPORTING
+          return = ls_return.
+
+    ELSE.
+      MESSAGE 'Error on create entries' TYPE 'I'.
+      CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'
+        IMPORTING
+          return = ls_return.
+    ENDIF.
+
+  ELSE.
+    "Choose using MODIFY
+    "Inserts one or more rows into a database table specified or overwrites existing ones.
+    MODIFY zuploadpersoncr FROM TABLE @got_person.
+
+  ENDIF.
+ENDFORM.
+
+*&---------------------------------------------------------------------*
+FORM f_writedata_desktop USING us_table TYPE zot_uploadpersoncr.
+  DATA: it_file     TYPE STANDARD TABLE OF string,
+        lv_line     TYPE string,
+        lv_path     TYPE string,
+        lv_filename TYPE string,
+        lv_fullpath TYPE string,
+        lv_result   TYPE i.
+
+  LOOP AT us_table ASSIGNING FIELD-SYMBOL(<fs_table>).
+    lv_line = |{ <fs_table>-id };{ <fs_table>-code_electoral };{ <fs_table>-expire_date };{ <fs_table>-committee_vote };{ <fs_table>-committee_vote };{ <fs_table>-name };{ <fs_table>-first_last_name };{ <fs_table>-second_last_name }|.
+    APPEND lv_line TO it_file.
+  ENDLOOP.
+
+  cl_gui_frontend_services=>file_save_dialog( EXPORTING window_title = 'File Directory'
+                                                      initial_directory = 'D:\code\data'
+                                            CHANGING  filename = lv_filename
+                                                      path = lv_path
+                                                      fullpath = lv_fullpath
+                                                      user_action = lv_result ).
+  IF lv_result NE 9.
+    cl_gui_frontend_services=>gui_download(
+      EXPORTING
+      filename = lv_fullpath
+      filetype = 'ASC'
+      IMPORTING
+        filelength = DATA(lv_len)
+      CHANGING
+        data_tab = it_file
+      ).
+  ELSE.
+    MESSAGE 'User Canceled' TYPE 'I'.
+  ENDIF.
+
 ENDFORM.

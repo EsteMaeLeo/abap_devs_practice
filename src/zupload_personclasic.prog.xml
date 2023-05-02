@@ -31,8 +31,8 @@
     <item>
      <ID>I</ID>
      <KEY>T03</KEY>
-     <ENTRY>Read file</ENTRY>
-     <LENGTH>10</LENGTH>
+     <ENTRY>Create entries</ENTRY>
+     <LENGTH>15</LENGTH>
     </item>
     <item>
      <ID>I</ID>
@@ -63,6 +63,12 @@
      <KEY>T08</KEY>
      <ENTRY>Max lines to upload</ENTRY>
      <LENGTH>29</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>T09</KEY>
+     <ENTRY>Delete All</ENTRY>
+     <LENGTH>20</LENGTH>
     </item>
     <item>
      <ID>R</ID>

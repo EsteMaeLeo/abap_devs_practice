@@ -1,9 +1,9 @@
 *&---------------------------------------------------------------------*
 *&  Include  zupload_personclasic_top
 *&---------------------------------------------------------------------*
-"TABLES: zuploadpersoncr.
+TABLES: zuploadpersoncr.
 
-
+TYPES: st_person TYPE zuploadpersoncr.
 
 DATA gwa_person TYPE zuploadpersoncr.
 
