@@ -1,13 +1,13 @@
 *******************************************************************
 *   System-defined Include-files.                                 *
 *******************************************************************
-  INCLUDE LZFM_PERSON_DBTOP.                 " Global Declarations
-  INCLUDE LZFM_PERSON_DBUXX.                 " Function Modules
+  INCLUDE lzfm_person_dbtop.                 " Global Declarations
+  INCLUDE lzfm_person_dbuxx.                 " Function Modules
 
 *******************************************************************
 *   User-defined Include-files (if necessary).                    *
 *******************************************************************
-* INCLUDE LZFM_PERSON_DBF...                 " Subroutines
+  INCLUDE zfm_person_dbforms.                 " Subroutines
 * INCLUDE LZFM_PERSON_DBO...                 " PBO-Modules
 * INCLUDE LZFM_PERSON_DBI...                 " PAI-Modules
 * INCLUDE LZFM_PERSON_DBE...                 " Events

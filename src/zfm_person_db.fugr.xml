@@ -15,6 +15,77 @@
     <item>
      <FUNCNAME>ZFM_PERSON_DELETE_DB</FUNCNAME>
      <SHORT_TEXT>FM Delete</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>I_DELETEALL</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
+       <REFERENCE>X</REFERENCE>
+       <TYP>CHAR1</TYP>
+      </RSIMP>
+     </IMPORT>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>I_DELETEALL</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Delete All Entries</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+    <item>
+     <FUNCNAME>ZFM_PERSON_READ_PERSON</FUNCNAME>
+     <REMOTE_CALL>R</REMOTE_CALL>
+     <SHORT_TEXT>Return record for ID</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>IM_ID</PARAMETER>
+       <TYP>ZIDCR</TYP>
+      </RSIMP>
+     </IMPORT>
+     <EXPORT>
+      <RSEXP>
+       <PARAMETER>EX_PERSON</PARAMETER>
+       <TYP>ZSTPERSON</TYP>
+      </RSEXP>
+      <RSEXP>
+       <PARAMETER>EX_MESSAGE</PARAMETER>
+       <TYP>BAPIRET2</TYP>
+      </RSEXP>
+     </EXPORT>
+     <EXCEPTION>
+      <RSEXC>
+       <EXCEPTION>ID_EMPTY</EXCEPTION>
+      </RSEXC>
+      <RSEXC>
+       <EXCEPTION>NOT_RECORD_FOUND</EXCEPTION>
+      </RSEXC>
+     </EXCEPTION>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>IM_ID</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>ID USER</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>EX_PERSON</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Structure of type ZUPLOADPERSONCR</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>EX_MESSAGE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Return Messages</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>ID_EMPTY</PARAMETER>
+       <KIND>X</KIND>
+       <STEXT>ID is empty</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>NOT_RECORD_FOUND</PARAMETER>
+       <KIND>X</KIND>
+       <STEXT>No records founds</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
     </item>
    </FUNCTIONS>
   </asx:values>
