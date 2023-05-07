@@ -87,6 +87,36 @@
       </RSFDO>
      </DOCUMENTATION>
     </item>
+    <item>
+     <FUNCNAME>ZFM_PERSON_STATE_PERSON</FUNCNAME>
+     <REMOTE_CALL>R</REMOTE_CALL>
+     <SHORT_TEXT>Read Person for state</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>IM_STATE</PARAMETER>
+       <DEFAULT>&apos;SJ&apos;</DEFAULT>
+       <TYP>CHAR1</TYP>
+      </RSIMP>
+     </IMPORT>
+     <EXPORT>
+      <RSEXP>
+       <PARAMETER>EX_TAB_PERSON</PARAMETER>
+       <TYP>ZST_UPLOADPERSONCR</TYP>
+      </RSEXP>
+     </EXPORT>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>IM_STATE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>state</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>EX_TAB_PERSON</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Sort Table Person</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
    </FUNCTIONS>
   </asx:values>
  </asx:abap>

@@ -1,42 +1,51 @@
-class ZCL_GLOBAL_UTILS definition
-  public
-  final
-  create public .
+CLASS zcl_global_utils DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
 
-public section.
+  PUBLIC SECTION.
 
-  constants C_PATH_UPLOAD_PEOLE type CHAR30 value 'ZUPLOAD_PEOPLE' ##NO_TEXT.
-  constants C_LOG_FILE_PEOPLE type CHAR30 value 'ZUPLOAD_FILE' ##NO_TEXT.
-  constants C_COMMA type CHAR1 value ',' ##NO_TEXT.
-  constants C_SEMICOLON type CHAR1 value ';' ##NO_TEXT.
-  constants C_SLASH type CHAR1 value '/' ##NO_TEXT.
-  constants C_HASTAG type CHAR1 value '#' ##NO_TEXT.
-  constants C_AT type CHAR1 value '@' ##NO_TEXT.
-  constants C_PERSON type CHAR5 value 'person' ##NO_TEXT.
-  constants C_TXT type CHAR4 value '.txt' ##NO_TEXT.
-  constants C_SPACE type CHAR1 value ' ' ##NO_TEXT.
-  constants C_STR_FLIGHT type DD02L-TABNAME value 'ZSPFLI' ##NO_TEXT.
-  constants C_TABLE_FLIGHT type DD02L-TABNAME value 'SPFLI' ##NO_TEXT.
-  constants C_STR_CONNID type DD02L-TABNAME value 'ZCONNID_REPORT' ##NO_TEXT.
-  constants C_STR_UPPERSON type DD02L-TABNAME value 'ZUPLOADPERSONCR' ##NO_TEXT.
-  constants C_TABLE_FLIGHTS type DD02L-TABNAME value 'SFLIGHT' ##NO_TEXT.
-  constants C_E type C value 'E' ##NO_TEXT.
-  constants C_W type C value 'W' ##NO_TEXT.
-  constants C_I type C value 'I' ##NO_TEXT.
-  constants C_S type C value 'S' ##NO_TEXT.
+    CONSTANTS c_path_upload_peole TYPE char30 VALUE 'ZUPLOAD_PEOPLE' ##NO_TEXT.
+    CONSTANTS c_log_file_people TYPE char30 VALUE 'ZUPLOAD_FILE' ##NO_TEXT.
+    CONSTANTS c_comma TYPE char1 VALUE ',' ##NO_TEXT.
+    CONSTANTS c_semicolon TYPE char1 VALUE ';' ##NO_TEXT.
+    CONSTANTS c_slash TYPE char1 VALUE '/' ##NO_TEXT.
+    CONSTANTS c_hastag TYPE char1 VALUE '#' ##NO_TEXT.
+    CONSTANTS c_at TYPE char1 VALUE '@' ##NO_TEXT.
+    CONSTANTS c_person TYPE char5 VALUE 'person' ##NO_TEXT.
+    CONSTANTS c_txt TYPE char4 VALUE '.txt' ##NO_TEXT.
+    CONSTANTS c_space TYPE char1 VALUE ' ' ##NO_TEXT.
+    CONSTANTS c_str_flight TYPE dd02l-tabname VALUE 'ZSPFLI' ##NO_TEXT.
+    CONSTANTS c_table_flight TYPE dd02l-tabname VALUE 'SPFLI' ##NO_TEXT.
+    CONSTANTS c_str_connid TYPE dd02l-tabname VALUE 'ZCONNID_REPORT' ##NO_TEXT.
+    CONSTANTS c_str_upperson TYPE dd02l-tabname VALUE 'ZUPLOADPERSONCR' ##NO_TEXT.
+    CONSTANTS c_table_flights TYPE dd02l-tabname VALUE 'SFLIGHT' ##NO_TEXT.
+    CONSTANTS c_e TYPE c VALUE 'E' ##NO_TEXT.
+    CONSTANTS c_w TYPE c VALUE 'W' ##NO_TEXT.
+    CONSTANTS c_i TYPE c VALUE 'I' ##NO_TEXT.
+    CONSTANTS c_s TYPE c VALUE 'S' ##NO_TEXT.
+    CONSTANTS c_sj TYPE c VALUE '1' ##NO_TEXT.
+    CONSTANTS c_al TYPE c VALUE '2' ##NO_TEXT.
+    CONSTANTS c_he TYPE c VALUE '3' ##NO_TEXT.
+    CONSTANTS c_ca TYPE c VALUE '4' ##NO_TEXT.
+    CONSTANTS c_pt TYPE c VALUE '5' ##NO_TEXT.
+    CONSTANTS c_gn TYPE c VALUE '6' ##NO_TEXT.
+    CONSTANTS c_lm TYPE c VALUE '7' ##NO_TEXT.
+    CONSTANTS c_08 TYPE c VALUE '8' ##NO_TEXT.
+    CONSTANTS c_09 TYPE c VALUE '9' ##NO_TEXT.
 
-  class-methods GET_LIST_FIELDS
-    importing
-      !STR_TABLE type DD02L-TABNAME
-    returning
-      value(RT_FIELDS) type STRING .
-protected section.
-private section.
+    CLASS-METHODS get_list_fields
+      IMPORTING
+        !str_table       TYPE dd02l-tabname
+      RETURNING
+        VALUE(rt_fields) TYPE string .
+  PROTECTED SECTION.
+  PRIVATE SECTION.
 ENDCLASS.
 
 
 
-CLASS ZCL_GLOBAL_UTILS IMPLEMENTATION.
+CLASS zcl_global_utils IMPLEMENTATION.
 
 
   METHOD get_list_fields.
