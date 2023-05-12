@@ -149,6 +149,7 @@ CLASS zcl_scrabble_score IMPLEMENTATION.
 
     "using for using new stament check is not initial
     IF lines( it_points ) NE 0.
+      "**the next line only count number total point in the array
       DATA(lv_count) = REDUCE i( INIT lv_x = 0 FOR wa_points IN it_points NEXT lv_x = lv_x + wa_points-point ).
       DATA(lv_count2) = strlen( input  ).
       DATA(lv_upper) = to_upper( input ).
