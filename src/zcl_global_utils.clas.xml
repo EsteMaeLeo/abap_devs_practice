@@ -112,6 +112,11 @@
      <LANGU>E</LANGU>
      <DESCRIPT>Pass structure and return list of fields</DESCRIPT>
     </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>VALIDATE_EMAIL</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Validate Email</DESCRIPT>
+    </SEOCOMPOTX>
    </DESCRIPTIONS>
    <DESCRIPTIONS_SUB>
     <SEOSUBCOTX>
@@ -119,6 +124,12 @@
      <SCONAME>STR_TABLE</SCONAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Table Name</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>VALIDATE_EMAIL</CMPNAME>
+     <SCONAME>EMAIL</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>E-Mail Address</DESCRIPT>
     </SEOSUBCOTX>
    </DESCRIPTIONS_SUB>
   </asx:values>
