@@ -8,7 +8,7 @@ REPORT zbasi_class02.
 *& CLASS Definition
 *&---------------------------------------------------------------------*
 *&--------student------------------------------------------------------*
-CLASS lcl_student DEFINITION.
+CLASS lcl_student DEFINITION FINAL. " Final class not allow inheritance
   PUBLIC SECTION.
 
     CLASS-DATA: counter TYPE i.
