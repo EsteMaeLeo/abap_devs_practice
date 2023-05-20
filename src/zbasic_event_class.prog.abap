@@ -23,6 +23,15 @@ CLASS customer DEFINITION.
   PRIVATE SECTION.
 ENDCLASS.
 
+CLASS waiter DEFINITION.
+  PUBLIC SECTION.
+    METHODS: constructor IMPORTING i_who TYPE string,
+      go_see_the_chef FOR EVENT call_for_waiter OF chef,
+      go_see_the_customer FOR EVENT call_for_waiter OF customer IMPORTING e_table_number.
+  PROTECTED SECTION.
+    DATA who TYPE string.
+ENDCLASS.
+
 CLASS chef IMPLEMENTATION.
   METHOD call_for_service.
     WRITE: / |Chef calling waiter event|.
@@ -47,11 +56,31 @@ CLASS customer IMPLEMENTATION.
 
 ENDCLASS.
 
+CLASS waiter IMPLEMENTATION.
+  METHOD: constructor.
+    who = i_who.
+  ENDMETHOD.
+
+  METHOD go_see_the_chef.
+    WRITE: / who, |goest to see the chef|.
+  ENDMETHOD.
+
+  METHOD go_see_the_customer.
+    WRITE: / who, |goest to see the customer at table|, e_table_number LEFT-JUSTIFIED.
+  ENDMETHOD.
+ENDCLASS.
+
 START-OF-SELECTION.
 
   DATA(o_chef) = NEW chef( ).
   DATA(o_customer1) = NEW customer( i_table_number = 2 ).
   DATA(o_customer2) = NEW customer( i_table_number = 3 ).
+  DATA(o_head_waiter) = NEW waiter( 'Sara the head waiter' ).
+  DATA(o_waiter) = NEW waiter( 'Bob the waiter' ).
+
+  "register handler
+  SET HANDLER: o_head_waiter->go_see_the_chef FOR o_chef,
+               o_waiter->go_see_the_customer FOR ALL INSTANCES.
 
   o_chef->call_for_service( ).
   o_customer1->call_for_assitance( ).
