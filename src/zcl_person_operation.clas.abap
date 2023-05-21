@@ -8,9 +8,12 @@ CLASS zcl_person_operation DEFINITION
     CLASS-DATA technical_message TYPE string.
 
     "return Person according ID
-    METHODS get_person IMPORTING id            TYPE zidcr
-                       EXPORTING message       TYPE bapiret2
-                       RETURNING VALUE(person) TYPE zstperson.
+    METHODS:
+      get_person IMPORTING id            TYPE zidcr
+                 EXPORTING message       TYPE bapiret2
+                 RETURNING VALUE(person) TYPE zstperson,
+      check_person IMPORTING id            TYPE zidcr
+                   RETURNING VALUE(exists) TYPE abap_bool.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -52,6 +55,17 @@ CLASS zcl_person_operation IMPLEMENTATION.
       message-type = zcl_global_utils=>c_e.
       message-number = 001.
     ENDIF.
+
+  ENDMETHOD.
+
+  METHOD check_person.
+    "method will use select single @ABAP_TRUE return data will be boolean.
+    SELECT SINGLE @abap_true
+        FROM zuploadpersoncr
+        INTO @DATA(lv_bool)
+        WHERE id EQ @id.
+
+    exists = lv_bool.
 
   ENDMETHOD.
 
