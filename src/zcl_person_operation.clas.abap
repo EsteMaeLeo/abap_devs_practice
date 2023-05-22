@@ -9,11 +9,15 @@ CLASS zcl_person_operation DEFINITION
 
     "return Person according ID
     METHODS:
-      get_person IMPORTING id            TYPE zidcr
-                 EXPORTING message       TYPE bapiret2
-                 RETURNING VALUE(person) TYPE zstperson,
-      check_person IMPORTING id            TYPE zidcr
-                   RETURNING VALUE(exists) TYPE abap_bool.
+      get_person                 IMPORTING id            TYPE zidcr
+                                 EXPORTING message       TYPE bapiret2
+                                 RETURNING VALUE(person) TYPE zstperson,
+      check_person_single_bool   IMPORTING id            TYPE zidcr
+                                 RETURNING VALUE(exists) TYPE abap_bool,
+      check_person_single_clasic IMPORTING id            TYPE zidcr
+                                 RETURNING VALUE(exists) TYPE abap_bool,
+      check_person_uptorows      IMPORTING id            TYPE zidcr
+                                 RETURNING VALUE(exists) TYPE abap_bool.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -21,7 +25,52 @@ ENDCLASS.
 
 
 
-CLASS zcl_person_operation IMPLEMENTATION.
+CLASS ZCL_PERSON_OPERATION IMPLEMENTATION.
+
+
+  METHOD check_person_single_bool.
+    "method will use select single @ABAP_TRUE return data will be boolean.
+    SELECT SINGLE @abap_true
+        FROM zuploadpersoncr
+        INTO @DATA(lv_bool)
+        WHERE id EQ @id.
+
+    exists = lv_bool.
+
+  ENDMETHOD.
+
+
+  METHOD check_person_single_clasic.
+    "select single
+    SELECT SINGLE id
+      FROM zuploadpersoncr
+      INTO @DATA(lv_id)
+      WHERE id EQ @id.
+
+    exists = COND #( WHEN lv_id NE 0 AND sy-subrc EQ 0 THEN abap_true
+                     ELSE abap_false  ) .
+
+  ENDMETHOD.
+
+
+  METHOD check_person_uptorows.
+
+    SELECT id
+    INTO @DATA(lv_id)
+    FROM zuploadpersoncr
+    UP TO 1 ROWS
+    ORDER BY id.
+    ENDSELECT.
+
+    SELECT id
+    INTO TABLE @DATA(it_id)
+    FROM zuploadpersoncr
+    UP TO 1 ROWS
+    ORDER BY id.
+
+  ENDMETHOD.
+
+
   METHOD get_person.
 
     CLEAR technical_message.
@@ -57,16 +106,4 @@ CLASS zcl_person_operation IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
-
-  METHOD check_person.
-    "method will use select single @ABAP_TRUE return data will be boolean.
-    SELECT SINGLE @abap_true
-        FROM zuploadpersoncr
-        INTO @DATA(lv_bool)
-        WHERE id EQ @id.
-
-    exists = lv_bool.
-
-  ENDMETHOD.
-
 ENDCLASS.
