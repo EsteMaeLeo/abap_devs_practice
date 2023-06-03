@@ -117,6 +117,10 @@
       </RSFDO>
      </DOCUMENTATION>
     </item>
+    <item>
+     <FUNCNAME>ZFM_PERSON_UPDATE_DB</FUNCNAME>
+     <SHORT_TEXT>FM update a person in DB</SHORT_TEXT>
+    </item>
    </FUNCTIONS>
   </asx:values>
  </asx:abap>

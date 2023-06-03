@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_DEMO_OPERATIONS</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Class for operations</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>RANDOM_STRING</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Generate Random String</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>RANDOM_STRING</CMPNAME>
+     <SCONAME>NUMBER_STRING</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Number of strings</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>RANDOM_STRING</CMPNAME>
+     <SCONAME>RANDOM_STRING</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Return random strings</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>
