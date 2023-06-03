@@ -25,7 +25,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_PERSON_OPERATION IMPLEMENTATION.
+CLASS zcl_person_operation IMPLEMENTATION.
 
 
   METHOD check_person_single_bool.
@@ -56,17 +56,23 @@ CLASS ZCL_PERSON_OPERATION IMPLEMENTATION.
   METHOD check_person_uptorows.
 
     SELECT id
-    INTO @DATA(lv_id)
     FROM zuploadpersoncr
-    UP TO 1 ROWS
-    ORDER BY id.
+    WHERE id EQ @id
+    ORDER BY id
+    INTO @DATA(lv_id)
+    UP TO 1 ROWS.
+
     ENDSELECT.
 
     SELECT id
-    INTO TABLE @DATA(it_id)
     FROM zuploadpersoncr
-    UP TO 1 ROWS
-    ORDER BY id.
+    WHERE id EQ @id
+    ORDER BY id
+    INTO TABLE @DATA(it_id)
+    UP TO 1 ROWS.
+
+    exists = COND #( WHEN lv_id NE 0 AND sy-subrc EQ 0 THEN abap_true
+                 ELSE abap_false  ) .
 
   ENDMETHOD.
 
@@ -106,4 +112,5 @@ CLASS ZCL_PERSON_OPERATION IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
+
 ENDCLASS.
