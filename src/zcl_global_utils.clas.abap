@@ -5,6 +5,8 @@ CLASS zcl_global_utils DEFINITION
 
   PUBLIC SECTION.
 
+    TYPES: tt_inttab TYPE STANDARD TABLE OF i WITH EMPTY KEY.
+
     CONSTANTS c_path_upload_peole TYPE char30 VALUE 'ZUPLOAD_PEOPLE' ##NO_TEXT.
     CONSTANTS c_log_file_people TYPE char30 VALUE 'ZUPLOAD_FILE' ##NO_TEXT.
     CONSTANTS c_comma TYPE char1 VALUE ',' ##NO_TEXT.
@@ -47,9 +49,20 @@ CLASS zcl_global_utils DEFINITION
         VALUE(type_msg) TYPE char1 .
     CLASS-METHODS get_randm_string
       IMPORTING
-        number_string TYPE i DEFAULT 1
+        number_string        TYPE i DEFAULT 1
       RETURNING
         VALUE(random_string) TYPE string.
+    CLASS-METHODS get_random_numbers
+      IMPORTING
+        option TYPE c DEFAULT 'I'
+        min    TYPE i
+        max    TYPE i
+        time_d TYPE i
+      EXPORTING
+        inttab TYPE tt_inttab
+        int8   TYPE int8
+        float  TYPE f
+        packed TYPE p .
 
     INTERFACES if_oo_adt_classrun.
   PROTECTED SECTION.
@@ -58,7 +71,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_GLOBAL_UTILS IMPLEMENTATION.
+CLASS zcl_global_utils IMPLEMENTATION.
 
 
   METHOD get_list_fields.
@@ -107,10 +120,38 @@ CLASS ZCL_GLOBAL_UTILS IMPLEMENTATION.
 
   ENDMETHOD.
 
+  METHOD get_random_numbers.
+
+    IF option EQ c_i.
+      DATA(lo_random) = cl_abap_random_int=>create( seed = cl_abap_random=>seed( )
+                                                    min  = min
+                                                    max = max ).
+
+      DO  time_d  TIMES.
+        DATA(lv_random_num) = lo_random->get_next( ).
+        INSERT lv_random_num INTO TABLE inttab.
+
+      ENDDO.
+    ENDIF.
+
+  ENDMETHOD.
+
   METHOD if_oo_adt_classrun~main.
     DATA(ld_text) = |Output implementaion interface if_oo_adt_classrun~main|.
     out->write( ld_text ).
-    data(random) = me->get_randm_string( 2 ).
-     out->write( random ).
+    DATA(random) = me->get_randm_string( 2 ).
+    out->write( random ).
+    DATA it_int TYPE tt_inttab.
+    me->get_random_numbers(
+      EXPORTING
+        option = 'I'
+        min    = 1
+        max    = 100
+        time_d = 10
+      IMPORTING
+        inttab = it_int ).
+        out->write( it_int ).
   ENDMETHOD.
+
+
 ENDCLASS.
