@@ -64,6 +64,17 @@ CLASS zcl_global_utils DEFINITION
         float  TYPE f
         packed TYPE p .
 
+    CLASS-METHODS get_random_numbers_int
+      IMPORTING
+                min           TYPE i
+                max           TYPE i
+      RETURNING VALUE(number) TYPE i.
+
+    CLASS-METHODS generate_char_number
+      IMPORTING
+                ascii       TYPE i
+      RETURNING VALUE(char) TYPE char10.
+
     INTERFACES if_oo_adt_classrun.
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -136,6 +147,22 @@ CLASS zcl_global_utils IMPLEMENTATION.
 
   ENDMETHOD.
 
+  METHOD get_random_numbers_int.
+
+    DATA(lo_random) = cl_abap_random_int=>create( seed = cl_abap_random=>seed( )
+                                                  min  = min
+                                                  max = max ).
+
+    number = lo_random->get_next( ).
+
+  ENDMETHOD.
+
+  METHOD  generate_char_number.
+
+    char = cl_abap_conv_in_ce=>uccpi( ascii ).
+
+  ENDMETHOD.
+
   METHOD if_oo_adt_classrun~main.
     DATA(ld_text) = |Output implementaion interface if_oo_adt_classrun~main|.
     out->write( ld_text ).
@@ -150,7 +177,13 @@ CLASS zcl_global_utils IMPLEMENTATION.
         time_d = 10
       IMPORTING
         inttab = it_int ).
-        out->write( it_int ).
+    out->write( it_int ).
+
+    DATA(lv_int) = me->get_random_numbers_int(
+                   min    =  1
+                   max    =  100
+               ).
+    out->write( lv_int ).
   ENDMETHOD.
 
 
