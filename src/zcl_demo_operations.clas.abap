@@ -17,6 +17,12 @@ CLASS zcl_demo_operations DEFINITION
 
     METHODS generate_workarea.
 
+    METHODS modify_demo.
+
+    METHODS insert_demo.
+
+    METHODS delete_demo.
+
     CLASS-METHODS generate_char_hexadecimal
       IMPORTING
         ascii TYPE x
@@ -31,7 +37,11 @@ CLASS zcl_demo_operations DEFINITION
     CLASS-METHODS: generate_data_demo
       RETURNING VALUE(it_demo) TYPE tt_demo.
 
+    CLASS-METHODS: generate_data_while
+      RETURNING VALUE(it_demo) TYPE tt_demo.
+
     INTERFACES if_oo_adt_classrun.
+
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -89,19 +99,7 @@ CLASS zcl_demo_operations IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD generate_workarea.
-    CLEAR wa_demo_update.
-    wa_demo_update-col1 = zcl_global_utils=>get_random_numbers_int( EXPORTING
-                                                                      min    = 1
-                                                                      max    = 10
-                                                                  ).
-  ENDMETHOD.
-
-  METHOD if_oo_adt_classrun~main.
-    DATA(ld_text) = |Output CLASS DEMO Operations|.
-    out->write( ld_text ).
-
-
+  METHOD generate_data_while.
     DATA lv_count  TYPE i VALUE 65.
     WHILE lv_count  <= 90.
 
@@ -127,10 +125,54 @@ CLASS zcl_demo_operations IMPLEMENTATION.
       lv_count = lv_count + 1.
 
     ENDWHILE.
-    out->write( it_demo ).
+  ENDMETHOD.
+
+  METHOD generate_workarea.
+    CLEAR wa_demo_update.
+    wa_demo_update-col1 = zcl_global_utils=>get_random_numbers_int( EXPORTING
+                                                                      min    = 1
+                                                                      max    = 10
+                                                                  ).
+  ENDMETHOD.
+
+  METHOD modify_demo.
+    DATA :lx_root TYPE REF TO cx_root,
+          err_msg TYPE char200.
+    TRY.
+        MODIFY demo_update FROM TABLE it_demo.
+      CATCH cx_root INTO lx_root.
+
+        err_msg = lx_root->get_text( ).
+    ENDTRY.
+  ENDMETHOD.
+
+  METHOD insert_demo.
+      DATA :lx_root TYPE REF TO cx_root,
+          err_msg TYPE char200.
+    TRY.
+        INSERT demo_update FROM TABLE it_demo.
+      CATCH cx_root INTO lx_root.
+
+        err_msg = lx_root->get_text( ).
+    ENDTRY.
+  ENDMETHOD.
+
+  METHOD delete_demo.
+    delete from demo_update.
+  ENDMETHOD.
+
+  METHOD if_oo_adt_classrun~main.
+    DATA(ld_text) = |Output CLASS DEMO Operations|.
+    out->write( ld_text ).
+
     FREE it_demo.
     it_demo = me->generate_data_demo( ).
     out->write( it_demo ).
+    it_demo = me->generate_data_while(  ).
+    out->write( it_demo ).
+    out->write( |Modify DEMO Operations| ).
+    me->delete_demo(  ).
+    me->modify_demo(  ).
 
 
   ENDMETHOD.
