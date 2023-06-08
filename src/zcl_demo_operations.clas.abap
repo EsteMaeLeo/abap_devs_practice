@@ -23,6 +23,15 @@ CLASS zcl_demo_operations DEFINITION
 
     METHODS delete_demo.
 
+    METHODS update_demo
+      IMPORTING
+                wa_demo       TYPE demo_update
+                it_demo       TYPE tt_demo
+                option        TYPE c
+      RETURNING VALUE(result) TYPE abap_bool.
+
+    METHODS commit_work.
+
     CLASS-METHODS generate_char_hexadecimal
       IMPORTING
         ascii TYPE x
@@ -147,7 +156,7 @@ CLASS zcl_demo_operations IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD insert_demo.
-      DATA :lx_root TYPE REF TO cx_root,
+    DATA :lx_root TYPE REF TO cx_root,
           err_msg TYPE char200.
     TRY.
         INSERT demo_update FROM TABLE it_demo.
@@ -158,7 +167,30 @@ CLASS zcl_demo_operations IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD delete_demo.
-    delete from demo_update.
+    DELETE FROM demo_update.
+  ENDMETHOD.
+
+  METHOD update_demo.
+
+    CASE option.
+      WHEN '1'.
+        UPDATE demo_update FROM wa_demo.
+        IF sy-subrc EQ 0.
+          result = abap_true.
+        ENDIF.
+      WHEN '2'.
+        UPDATE demo_update FROM TABLE it_demo.
+        IF sy-subrc EQ 0.
+          result = abap_true.
+        ENDIF.
+    ENDCASE.
+
+  ENDMETHOD.
+
+  METHOD commit_work.
+    CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+      EXPORTING
+        wait = abap_true.
   ENDMETHOD.
 
   METHOD if_oo_adt_classrun~main.
