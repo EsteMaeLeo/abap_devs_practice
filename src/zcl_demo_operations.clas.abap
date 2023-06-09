@@ -57,7 +57,19 @@ ENDCLASS.
 
 
 
-CLASS zcl_demo_operations IMPLEMENTATION.
+CLASS ZCL_DEMO_OPERATIONS IMPLEMENTATION.
+
+
+  METHOD commit_work.
+    CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+      EXPORTING
+        wait = abap_true.
+  ENDMETHOD.
+
+
+  METHOD delete_demo.
+    DELETE FROM demo_update.
+  ENDMETHOD.
 
 
   METHOD generate_char_hexadecimal.
@@ -70,20 +82,13 @@ CLASS zcl_demo_operations IMPLEMENTATION.
 
   ENDMETHOD.
 
+
   METHOD  generate_char_number.
 
     char = cl_abap_conv_in_ce=>uccpi( ascii ).
 
   ENDMETHOD.
 
-  METHOD random_string.
-
-    CALL FUNCTION 'GENERAL_GET_RANDOM_STRING'
-      EXPORTING
-        number_chars  = number_string
-      IMPORTING
-        random_string = random_string.
-  ENDMETHOD.
 
   METHOD generate_data_demo.
 
@@ -107,6 +112,7 @@ CLASS zcl_demo_operations IMPLEMENTATION.
                                                                                           )  ) ).
 
   ENDMETHOD.
+
 
   METHOD generate_data_while.
     DATA lv_count  TYPE i VALUE 65.
@@ -136,6 +142,7 @@ CLASS zcl_demo_operations IMPLEMENTATION.
     ENDWHILE.
   ENDMETHOD.
 
+
   METHOD generate_workarea.
     CLEAR wa_demo_update.
     wa_demo_update-col1 = zcl_global_utils=>get_random_numbers_int( EXPORTING
@@ -144,54 +151,6 @@ CLASS zcl_demo_operations IMPLEMENTATION.
                                                                   ).
   ENDMETHOD.
 
-  METHOD modify_demo.
-    DATA :lx_root TYPE REF TO cx_root,
-          err_msg TYPE char200.
-    TRY.
-        MODIFY demo_update FROM TABLE it_demo.
-      CATCH cx_root INTO lx_root.
-
-        err_msg = lx_root->get_text( ).
-    ENDTRY.
-  ENDMETHOD.
-
-  METHOD insert_demo.
-    DATA :lx_root TYPE REF TO cx_root,
-          err_msg TYPE char200.
-    TRY.
-        INSERT demo_update FROM TABLE it_demo.
-      CATCH cx_root INTO lx_root.
-
-        err_msg = lx_root->get_text( ).
-    ENDTRY.
-  ENDMETHOD.
-
-  METHOD delete_demo.
-    DELETE FROM demo_update.
-  ENDMETHOD.
-
-  METHOD update_demo.
-
-    CASE option.
-      WHEN '1'.
-        UPDATE demo_update FROM wa_demo.
-        IF sy-subrc EQ 0.
-          result = abap_true.
-        ENDIF.
-      WHEN '2'.
-        UPDATE demo_update FROM TABLE it_demo.
-        IF sy-subrc EQ 0.
-          result = abap_true.
-        ENDIF.
-    ENDCASE.
-
-  ENDMETHOD.
-
-  METHOD commit_work.
-    CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
-      EXPORTING
-        wait = abap_true.
-  ENDMETHOD.
 
   METHOD if_oo_adt_classrun~main.
     DATA(ld_text) = |Output CLASS DEMO Operations|.
@@ -210,4 +169,54 @@ CLASS zcl_demo_operations IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD insert_demo.
+    DATA :lx_root TYPE REF TO cx_root,
+          err_msg TYPE char200.
+    TRY.
+        INSERT demo_update FROM TABLE it_demo.
+      CATCH cx_root INTO lx_root.
+
+        err_msg = lx_root->get_text( ).
+    ENDTRY.
+  ENDMETHOD.
+
+
+  METHOD modify_demo.
+    DATA :lx_root TYPE REF TO cx_root,
+          err_msg TYPE char200.
+    TRY.
+        MODIFY demo_update FROM TABLE it_demo.
+      CATCH cx_root INTO lx_root.
+
+        err_msg = lx_root->get_text( ).
+    ENDTRY.
+  ENDMETHOD.
+
+
+  METHOD random_string.
+
+    CALL FUNCTION 'GENERAL_GET_RANDOM_STRING'
+      EXPORTING
+        number_chars  = number_string
+      IMPORTING
+        random_string = random_string.
+  ENDMETHOD.
+
+
+  METHOD update_demo.
+
+    CASE option.
+      WHEN '1'.
+        UPDATE demo_update FROM wa_demo.
+        IF sy-subrc EQ 0.
+          result = abap_true.
+        ENDIF.
+      WHEN '2'.
+        UPDATE demo_update FROM TABLE it_demo.
+        IF sy-subrc EQ 0.
+          result = abap_true.
+        ENDIF.
+    ENDCASE.
+
+  ENDMETHOD.
 ENDCLASS.

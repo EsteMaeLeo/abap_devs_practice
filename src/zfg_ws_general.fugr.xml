@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_FUGR" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <AREAT>General Examples for Web Service</AREAT>
+   <INCLUDES>
+    <SOBJ_NAME>LZFG_WS_GENERALTOP</SOBJ_NAME>
+    <SOBJ_NAME>SAPLZFG_WS_GENERAL</SOBJ_NAME>
+   </INCLUDES>
+   <FUNCTIONS>
+    <item>
+     <FUNCNAME>ZFM_FLIGHTS</FUNCNAME>
+     <REMOTE_CALL>R</REMOTE_CALL>
+     <SHORT_TEXT>Get Flights</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>AIRLINE_CODE</PARAMETER>
+       <TYP>S_CARR_ID</TYP>
+      </RSIMP>
+     </IMPORT>
+     <EXPORT>
+      <RSEXP>
+       <PARAMETER>FLIGHTS</PARAMETER>
+       <TYP>SPFLI_TAB</TYP>
+      </RSEXP>
+      <RSEXP>
+       <PARAMETER>RESULT</PARAMETER>
+       <TYP>TEXT80</TYP>
+      </RSEXP>
+     </EXPORT>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>AIRLINE_CODE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Airline Code</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>FLIGHTS</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Standard Internal Table for Database Table SPFLI</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>RESULT</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Text (80 Characters)</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+   </FUNCTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>
