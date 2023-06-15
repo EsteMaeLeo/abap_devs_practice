@@ -9,6 +9,33 @@
    </INCLUDES>
    <FUNCTIONS>
     <item>
+     <FUNCNAME>ZFM_AIRPORT</FUNCNAME>
+     <REMOTE_CALL>R</REMOTE_CALL>
+     <SHORT_TEXT>WBS Airport</SHORT_TEXT>
+     <EXPORT>
+      <RSEXP>
+       <PARAMETER>AIRPORTS</PARAMETER>
+       <TYP>ZSAIRPORT_TAB</TYP>
+      </RSEXP>
+      <RSEXP>
+       <PARAMETER>RESULT</PARAMETER>
+       <TYP>TEXT80</TYP>
+      </RSEXP>
+     </EXPORT>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>AIRPORTS</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>List Airports</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>RESULT</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Result</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+    <item>
      <FUNCNAME>ZFM_FLIGHTS</FUNCNAME>
      <REMOTE_CALL>R</REMOTE_CALL>
      <SHORT_TEXT>Get Flights</SHORT_TEXT>
