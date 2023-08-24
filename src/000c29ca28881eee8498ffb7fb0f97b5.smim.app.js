@@ -2,7 +2,7 @@ const api_url =
   "http://llrrpp.sap.com:50081/sap/bc/srt/wsdl/flv_10002A111AD1/bndg_url/sap/bc/srt/rfc/sap/zwbs_wb_get_airports/001/zwbs_wb_get_airports/zwbs_wb_get_airports?sap-client=001";
 
 let soap =
-  '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" ' +
+  '<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/" ' +
   'xmlns:urn="urn:sap-com:document:sap:rfc:functions">' +
   "<soapenv:Header/>" +
   "<soapenv:Body>" +
@@ -38,6 +38,7 @@ xhr.onload = function (){
 */
 let action =
   "http://llrrpp.sap.com:50081/sap/bc/srt/rfc/sap/zwbs_wb_get_airports/001/zwbs_wb_get_airports/zwbs_wb_get_airports";
+  
 var xmlhttp = new XMLHttpRequest();
 xmlhttp.withCredentials = true;
 
@@ -51,7 +52,7 @@ xmlhttp.onreadystatechange = function () {
     }
   }
 };
-xmlhttp.open("POST", api_url, false);
+xmlhttp.open("POST", action, false);
 xmlhttp.setRequestHeader("SOAPAction", action);
 xmlhttp.setRequestHeader("Content-Type", "text/xml");
 //xmlhttp.setHeader("Access-Control-Allow-Origin:", "*");

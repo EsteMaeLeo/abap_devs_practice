@@ -37,6 +37,18 @@
       <DESCRIPT>test page</DESCRIPT>
      </ATTRIBUTES>
     </item>
+    <item>
+     <ATTRIBUTES>
+      <APPLNAME>ZBSP_APP002</APPLNAME>
+      <PAGEKEY>TEST2.HTML</PAGEKEY>
+      <PAGENAME>test2.html</PAGENAME>
+      <MIMETYPE>text/html</MIMETYPE>
+      <IS_START_PAGE>X</IS_START_PAGE>
+      <LAYOUTLANGU>E</LAYOUTLANGU>
+      <VERSION>A</VERSION>
+      <LANGU>E</LANGU>
+     </ATTRIBUTES>
+    </item>
    </PAGES>
   </asx:values>
  </asx:abap>
