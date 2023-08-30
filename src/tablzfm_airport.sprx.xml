@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_SPRX" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <PROXY_HEADER>
+    <item>
+     <OBJECT>TABL</OBJECT>
+     <OBJ_NAME>ZFM_AIRPORT</OBJ_NAME>
+     <OBJECT_M>TABL</OBJECT_M>
+     <OBJ_NAME_M>ZFM_AIRPORT</OBJ_NAME_M>
+     <HASH_ID>385A70AE6E66CC7380D487914D7D13B1407193DB</HASH_ID>
+     <ID>&lt;message&gt; ZFM_AIRPORT urn:sap-com:document:sap:rfc:functions urn:sap-com:document:sap:rfc:functions</ID>
+     <IFR_GLOBAL>X</IFR_GLOBAL>
+     <IFR_TYPE>message</IFR_TYPE>
+     <IFR_NAME>ZFM_AIRPORT</IFR_NAME>
+     <IFR_NSPCE>urn:sap-com:document:sap:rfc:functions</IFR_NSPCE>
+     <IFR_GNSPCE>urn:sap-com:document:sap:rfc:functions</IFR_GNSPCE>
+     <GEN_VERS>0006</GEN_VERS>
+     <CATEGORY>ifmmessage</CATEGORY>
+     <GEN_APPL>WEBSERVICES</GEN_APPL>
+     <X-ML_NSPCE>urn:sap-com:document:sap:rfc:functions</X-ML_NSPCE>
+     <X-ML_NAME>ZFM_AIRPORT</X-ML_NAME>
+    </item>
+   </PROXY_HEADER>
+   <PROXY_DATA>
+    <item>
+     <OBJECT>TABL</OBJECT>
+     <OBJ_NAME>ZFM_AIRPORT</OBJ_NAME>
+     <OBJECT1>TABL</OBJECT1>
+     <OBJ_NAME1>ZFM_AIRPORT</OBJ_NAME1>
+     <OBJECT2>TABL</OBJECT2>
+     <OBJ_NAME2>ZFM_AIRPORT</OBJ_NAME2>
+     <ID>&lt;message&gt; ZFM_AIRPORT urn:sap-com:document:sap:rfc:functions urn:sap-com:document:sap:rfc:functions</ID>
+     <IFR_TYPE>message</IFR_TYPE>
+     <IFR_NAME>ZFM_AIRPORT</IFR_NAME>
+     <IFR_SCALE>-2</IFR_SCALE>
+     <R3_TYPE>TABL</R3_TYPE>
+     <R3_NAME>ZFM_AIRPORT</R3_NAME>
+     <R3_TEXT>Proxy Structure (generated)</R3_TEXT>
+     <CATEGORY>ifmmessage</CATEGORY>
+    </item>
+   </PROXY_DATA>
+  </asx:values>
+ </asx:abap>
+</abapGit>
