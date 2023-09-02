@@ -25,6 +25,11 @@
        <TYP>ZSAIRPORT_TAB</TYP>
       </RSIMP>
       <RSIMP>
+       <PARAMETER>ID_AIRPORT</PARAMETER>
+       <REFERENCE>X</REFERENCE>
+       <TYP>S_AIRPORT</TYP>
+      </RSIMP>
+      <RSIMP>
        <PARAMETER>FUNCTION</PARAMETER>
        <REFERENCE>X</REFERENCE>
        <TYP>CHAR1</TYP>
@@ -47,6 +52,11 @@
        <PARAMETER>ZSAIRPORT_TAB</PARAMETER>
        <KIND>P</KIND>
        <STEXT>SAIRPORT</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>ID_AIRPORT</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Airport Code</STEXT>
       </RSFDO>
       <RSFDO>
        <PARAMETER>FUNCTION</PARAMETER>

@@ -21,7 +21,10 @@ CLASS zcl_demo_operations DEFINITION
 
     METHODS insert_demo.
 
-    METHODS delete_demo.
+    METHODS delete_demo_all.
+
+    METHODS delete_id
+      IMPORTING id TYPE char1.
 
     METHODS update_demo
       IMPORTING
@@ -31,6 +34,12 @@ CLASS zcl_demo_operations DEFINITION
       RETURNING VALUE(result) TYPE abap_bool.
 
     METHODS commit_work.
+
+    METHODS: generate_data_demo
+      RETURNING VALUE(it_demo) TYPE tt_demo.
+
+    METHODS: generate_data_while
+      RETURNING VALUE(it_demo) TYPE tt_demo.
 
     CLASS-METHODS generate_char_hexadecimal
       IMPORTING
@@ -43,11 +52,6 @@ CLASS zcl_demo_operations DEFINITION
                 ascii       TYPE i
       RETURNING VALUE(char) TYPE char10.
 
-    CLASS-METHODS: generate_data_demo
-      RETURNING VALUE(it_demo) TYPE tt_demo.
-
-    CLASS-METHODS: generate_data_while
-      RETURNING VALUE(it_demo) TYPE tt_demo.
 
     INTERFACES if_oo_adt_classrun.
 
@@ -57,19 +61,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_DEMO_OPERATIONS IMPLEMENTATION.
-
-
-  METHOD commit_work.
-    CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
-      EXPORTING
-        wait = abap_true.
-  ENDMETHOD.
-
-
-  METHOD delete_demo.
-    DELETE FROM demo_update.
-  ENDMETHOD.
+CLASS zcl_demo_operations IMPLEMENTATION.
 
 
   METHOD generate_char_hexadecimal.
@@ -82,13 +74,20 @@ CLASS ZCL_DEMO_OPERATIONS IMPLEMENTATION.
 
   ENDMETHOD.
 
-
   METHOD  generate_char_number.
 
     char = cl_abap_conv_in_ce=>uccpi( ascii ).
 
   ENDMETHOD.
 
+  METHOD random_string.
+
+    CALL FUNCTION 'GENERAL_GET_RANDOM_STRING'
+      EXPORTING
+        number_chars  = number_string
+      IMPORTING
+        random_string = random_string.
+  ENDMETHOD.
 
   METHOD generate_data_demo.
 
@@ -112,7 +111,6 @@ CLASS ZCL_DEMO_OPERATIONS IMPLEMENTATION.
                                                                                           )  ) ).
 
   ENDMETHOD.
-
 
   METHOD generate_data_while.
     DATA lv_count  TYPE i VALUE 65.
@@ -142,7 +140,6 @@ CLASS ZCL_DEMO_OPERATIONS IMPLEMENTATION.
     ENDWHILE.
   ENDMETHOD.
 
-
   METHOD generate_workarea.
     CLEAR wa_demo_update.
     wa_demo_update-col1 = zcl_global_utils=>get_random_numbers_int( EXPORTING
@@ -150,36 +147,6 @@ CLASS ZCL_DEMO_OPERATIONS IMPLEMENTATION.
                                                                       max    = 10
                                                                   ).
   ENDMETHOD.
-
-
-  METHOD if_oo_adt_classrun~main.
-    DATA(ld_text) = |Output CLASS DEMO Operations|.
-    out->write( ld_text ).
-
-    FREE it_demo.
-    it_demo = me->generate_data_demo( ).
-    out->write( it_demo ).
-    it_demo = me->generate_data_while(  ).
-    out->write( it_demo ).
-    out->write( |Modify DEMO Operations| ).
-    me->delete_demo(  ).
-    me->modify_demo(  ).
-
-
-  ENDMETHOD.
-
-
-  METHOD insert_demo.
-    DATA :lx_root TYPE REF TO cx_root,
-          err_msg TYPE char200.
-    TRY.
-        INSERT demo_update FROM TABLE it_demo.
-      CATCH cx_root INTO lx_root.
-
-        err_msg = lx_root->get_text( ).
-    ENDTRY.
-  ENDMETHOD.
-
 
   METHOD modify_demo.
     DATA :lx_root TYPE REF TO cx_root,
@@ -192,16 +159,24 @@ CLASS ZCL_DEMO_OPERATIONS IMPLEMENTATION.
     ENDTRY.
   ENDMETHOD.
 
+  METHOD insert_demo.
+    DATA :lx_root TYPE REF TO cx_root,
+          err_msg TYPE char200.
+    TRY.
+        INSERT demo_update FROM TABLE it_demo.
+      CATCH cx_root INTO lx_root.
 
-  METHOD random_string.
-
-    CALL FUNCTION 'GENERAL_GET_RANDOM_STRING'
-      EXPORTING
-        number_chars  = number_string
-      IMPORTING
-        random_string = random_string.
+        err_msg = lx_root->get_text( ).
+    ENDTRY.
   ENDMETHOD.
 
+  METHOD delete_demo_all.
+    DELETE FROM demo_update.
+  ENDMETHOD.
+
+  METHOD delete_id.
+    DELETE FROM demo_update WHERE id = id.
+  ENDMETHOD.
 
   METHOD update_demo.
 
@@ -219,4 +194,28 @@ CLASS ZCL_DEMO_OPERATIONS IMPLEMENTATION.
     ENDCASE.
 
   ENDMETHOD.
+
+  METHOD commit_work.
+    CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+      EXPORTING
+        wait = abap_true.
+  ENDMETHOD.
+
+  METHOD if_oo_adt_classrun~main.
+    DATA(ld_text) = |Output CLASS DEMO Operations|.
+    out->write( ld_text ).
+
+    FREE it_demo.
+    it_demo = me->generate_data_demo( ).
+    out->write( it_demo ).
+    it_demo = me->generate_data_while(  ).
+    out->write( it_demo ).
+    out->write( |Modify DEMO Operations| ).
+    me->delete_demo_all(  ).
+    me->modify_demo(  ).
+
+
+  ENDMETHOD.
+
+
 ENDCLASS.
