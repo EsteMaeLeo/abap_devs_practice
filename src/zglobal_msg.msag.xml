@@ -44,6 +44,60 @@
      <MSGNR>005</MSGNR>
      <TEXT>Duplicate keys occurred: &amp;1 &amp;2 &amp;3</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>Successful get airport: &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>Error to get airport: &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>Successful to get all airports</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>009</MSGNR>
+     <TEXT>Error not data found on &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>010</MSGNR>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>011</MSGNR>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>012</MSGNR>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>013</MSGNR>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>014</MSGNR>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>015</MSGNR>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>
