@@ -26,6 +26,24 @@
      <MSGNR>002</MSGNR>
      <TEXT>Person record found</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Error when changing table &amp;1 &amp;2</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Insert successful: &amp;1 &amp;2</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Duplicate keys occurred: &amp;1 &amp;2 &amp;3</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

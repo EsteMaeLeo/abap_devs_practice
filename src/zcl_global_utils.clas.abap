@@ -43,6 +43,7 @@ public section.
   constants C_R type C value 'R' ##NO_TEXT.
   constants C_U type C value 'U' ##NO_TEXT.
   constants C_D type C value 'D' ##NO_TEXT.
+  constants C_A type C value 'A' ##NO_TEXT.
 
   class-methods GET_LIST_FIELDS
     importing
