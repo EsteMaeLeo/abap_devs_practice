@@ -134,6 +134,12 @@
      <MSGNR>020</MSGNR>
      <TEXT>Error on insert entries</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>021</MSGNR>
+     <TEXT>Internal Table &amp;1 is empty. Need pass data into internal table</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

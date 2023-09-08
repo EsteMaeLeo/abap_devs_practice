@@ -14,6 +14,21 @@ FUNCTION zfm_mantain_airport.
   DATA: lwa_message TYPE symsg,
         lv_subrc    LIKE sy-subrc.
 
+
+  IF im_function NE zcl_global_utils=>c_r.
+    CALL FUNCTION 'ENQUEUE_EZAIRPORT'
+      EXPORTING
+        mandt          = sy-mandt
+      EXCEPTIONS
+        foreign_lock   = 1
+        system_failure = 2
+        OTHERS         = 3.
+    IF sy-subrc <> 0.
+* Implement suitable error handling here
+    ENDIF.
+
+  ENDIF.
+
   CASE im_function.
     WHEN zcl_global_utils=>c_a. "Recreate all data Airport
       PERFORM f_recreate_all_airport CHANGING ex_result.
@@ -41,6 +56,18 @@ FUNCTION zfm_mantain_airport.
       PERFORM f_delete_all_airport CHANGING ex_result.
   ENDCASE.
 
+  IF im_function NE zcl_global_utils=>c_r.
+    CALL FUNCTION 'DEQUEUE_EZAIRPORT'
+      EXPORTING
+        mandt          = sy-mandt
+      EXCEPTIONS
+        foreign_lock   = 1
+        system_failure = 2
+        OTHERS         = 3.
+    IF sy-subrc <> 0.
+* Implement suitable error handling here
+    ENDIF.
 
+  ENDIF.
 
 ENDFUNCTION.
