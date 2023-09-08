@@ -26,6 +26,7 @@
       </RSIMP>
       <RSIMP>
        <PARAMETER>IM_IDAIRPORT</PARAMETER>
+       <OPTIONAL>X</OPTIONAL>
        <REFERENCE>X</REFERENCE>
        <TYP>S_AIRPORT</TYP>
       </RSIMP>

@@ -72,31 +72,67 @@
      <SPRSL>E</SPRSL>
      <ARBGB>ZGLOBAL_MSG</ARBGB>
      <MSGNR>010</MSGNR>
+     <TEXT>Error when deleting the table: &amp;1</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>ZGLOBAL_MSG</ARBGB>
      <MSGNR>011</MSGNR>
+     <TEXT>Error when deleting the table with ID: &amp;1</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>ZGLOBAL_MSG</ARBGB>
      <MSGNR>012</MSGNR>
+     <TEXT>Successful to delete entry with ID: &amp;1</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>ZGLOBAL_MSG</ARBGB>
      <MSGNR>013</MSGNR>
+     <TEXT>Successful when deleting the table: &amp;1</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>ZGLOBAL_MSG</ARBGB>
      <MSGNR>014</MSGNR>
+     <TEXT>Successful to update entry with: &amp;1</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>ZGLOBAL_MSG</ARBGB>
      <MSGNR>015</MSGNR>
+     <TEXT>Error when update the table with: &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>016</MSGNR>
+     <TEXT>Successful to update table: &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>017</MSGNR>
+     <TEXT>Error when update the table: &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>018</MSGNR>
+     <TEXT>Inserted entries successfully</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>019</MSGNR>
+     <TEXT>Duplicate keys occurred</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZGLOBAL_MSG</ARBGB>
+     <MSGNR>020</MSGNR>
+     <TEXT>Error on insert entries</TEXT>
     </T100>
    </T100>
   </asx:values>
