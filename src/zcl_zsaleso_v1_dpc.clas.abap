@@ -256,7 +256,7 @@ CLASS ZCL_ZSALESO_V1_DPC IMPLEMENTATION.
   method /IWBEP/IF_MGW_APPL_SRV_RUNTIME~CREATE_ENTITY.
 *&----------------------------------------------------------------------------------------------*
 *&  Include           /IWBEP/DPC_TEMP_CRT_ENTITY_BASE
-*&* This class has been generated on 15.12.2023 11:14:06 in client 001
+*&* This class has been generated on 15.12.2023 12:00:31 in client 001
 *&*
 *&*       WARNING--> NEVER MODIFY THIS CLASS <--WARNING
 *&*   If you want to change the DPC implementation, use the
@@ -272,9 +272,9 @@ lv_entityset_name = io_tech_request_context->get_entity_set_name( ).
 
 CASE lv_entityset_name.
 *-------------------------------------------------------------------------*
-*             EntitySet -  customersSet
+*             EntitySet -  CustomersSet
 *-------------------------------------------------------------------------*
-     WHEN 'customersSet'.
+     WHEN 'CustomersSet'.
 *     Call the entity set generated method
     customersset_create_entity(
          EXPORTING iv_entity_name     = iv_entity_name
@@ -295,9 +295,9 @@ CASE lv_entityset_name.
    ).
 
 *-------------------------------------------------------------------------*
-*             EntitySet -  ordersSet
+*             EntitySet -  OrdersSet
 *-------------------------------------------------------------------------*
-     WHEN 'ordersSet'.
+     WHEN 'OrdersSet'.
 *     Call the entity set generated method
     ordersset_create_entity(
          EXPORTING iv_entity_name     = iv_entity_name
@@ -359,7 +359,7 @@ ENDCASE.
   method /IWBEP/IF_MGW_APPL_SRV_RUNTIME~DELETE_ENTITY.
 *&----------------------------------------------------------------------------------------------*
 *&  Include           /IWBEP/DPC_TEMP_DEL_ENTITY_BASE
-*&* This class has been generated on 15.12.2023 11:14:06 in client 001
+*&* This class has been generated on 15.12.2023 12:00:31 in client 001
 *&*
 *&*       WARNING--> NEVER MODIFY THIS CLASS <--WARNING
 *&*   If you want to change the DPC implementation, use the
@@ -372,9 +372,9 @@ lv_entityset_name = io_tech_request_context->get_entity_set_name( ).
 
 CASE lv_entityset_name.
 *-------------------------------------------------------------------------*
-*             EntitySet -  customersSet
+*             EntitySet -  CustomersSet
 *-------------------------------------------------------------------------*
-      when 'customersSet'.
+      when 'CustomersSet'.
 *     Call the entity set generated method
      customersset_delete_entity(
           EXPORTING iv_entity_name     = iv_entity_name
@@ -386,9 +386,9 @@ CASE lv_entityset_name.
      ).
 
 *-------------------------------------------------------------------------*
-*             EntitySet -  ordersSet
+*             EntitySet -  OrdersSet
 *-------------------------------------------------------------------------*
-      when 'ordersSet'.
+      when 'OrdersSet'.
 *     Call the entity set generated method
      ordersset_delete_entity(
           EXPORTING iv_entity_name     = iv_entity_name
@@ -429,7 +429,7 @@ CASE lv_entityset_name.
   method /IWBEP/IF_MGW_APPL_SRV_RUNTIME~GET_ENTITY.
 *&-----------------------------------------------------------------------------------------------*
 *&  Include           /IWBEP/DPC_TEMP_GETENTITY_BASE
-*&* This class has been generated  on 15.12.2023 11:14:06 in client 001
+*&* This class has been generated  on 15.12.2023 12:00:31 in client 001
 *&*
 *&*       WARNING--> NEVER MODIFY THIS CLASS <--WARNING
 *&*   If you want to change the DPC implementation, use the
@@ -446,9 +446,9 @@ lv_entityset_name = io_tech_request_context->get_entity_set_name( ).
 
 CASE lv_entityset_name.
 *-------------------------------------------------------------------------*
-*             EntitySet -  customersSet
+*             EntitySet -  CustomersSet
 *-------------------------------------------------------------------------*
-      WHEN 'customersSet'.
+      WHEN 'CustomersSet'.
 *     Call the entity set generated method
           customersset_get_entity(
                EXPORTING iv_entity_name     = iv_entity_name
@@ -474,9 +474,9 @@ CASE lv_entityset_name.
           er_entity = lr_entity.
         ENDIF.
 *-------------------------------------------------------------------------*
-*             EntitySet -  ordersSet
+*             EntitySet -  OrdersSet
 *-------------------------------------------------------------------------*
-      WHEN 'ordersSet'.
+      WHEN 'OrdersSet'.
 *     Call the entity set generated method
           ordersset_get_entity(
                EXPORTING iv_entity_name     = iv_entity_name
@@ -548,7 +548,7 @@ CASE lv_entityset_name.
   method /IWBEP/IF_MGW_APPL_SRV_RUNTIME~GET_ENTITYSET.
 *&----------------------------------------------------------------------------------------------*
 *&  Include           /IWBEP/DPC_TMP_ENTITYSET_BASE
-*&* This class has been generated on 15.12.2023 11:14:06 in client 001
+*&* This class has been generated on 15.12.2023 12:00:31 in client 001
 *&*
 *&*       WARNING--> NEVER MODIFY THIS CLASS <--WARNING
 *&*   If you want to change the DPC implementation, use the
@@ -563,9 +563,9 @@ lv_entityset_name = io_tech_request_context->get_entity_set_name( ).
 
 CASE lv_entityset_name.
 *-------------------------------------------------------------------------*
-*             EntitySet -  customersSet
+*             EntitySet -  CustomersSet
 *-------------------------------------------------------------------------*
-   WHEN 'customersSet'.
+   WHEN 'CustomersSet'.
 *     Call the entity set generated method
       customersset_get_entityset(
         EXPORTING
@@ -593,9 +593,9 @@ CASE lv_entityset_name.
       ).
 
 *-------------------------------------------------------------------------*
-*             EntitySet -  ordersSet
+*             EntitySet -  OrdersSet
 *-------------------------------------------------------------------------*
-   WHEN 'ordersSet'.
+   WHEN 'OrdersSet'.
 *     Call the entity set generated method
       ordersset_get_entityset(
         EXPORTING
@@ -675,7 +675,7 @@ CASE lv_entityset_name.
   method /IWBEP/IF_MGW_APPL_SRV_RUNTIME~UPDATE_ENTITY.
 *&----------------------------------------------------------------------------------------------*
 *&  Include           /IWBEP/DPC_TEMP_UPD_ENTITY_BASE
-*&* This class has been generated on 15.12.2023 11:14:06 in client 001
+*&* This class has been generated on 15.12.2023 12:00:31 in client 001
 *&*
 *&*       WARNING--> NEVER MODIFY THIS CLASS <--WARNING
 *&*   If you want to change the DPC implementation, use the
@@ -692,9 +692,9 @@ lv_entityset_name = io_tech_request_context->get_entity_set_name( ).
 
 CASE lv_entityset_name.
 *-------------------------------------------------------------------------*
-*             EntitySet -  customersSet
+*             EntitySet -  CustomersSet
 *-------------------------------------------------------------------------*
-      WHEN 'customersSet'.
+      WHEN 'CustomersSet'.
 *     Call the entity set generated method
           customersset_update_entity(
                EXPORTING iv_entity_name     = iv_entity_name
@@ -719,9 +719,9 @@ CASE lv_entityset_name.
           er_entity = lr_entity.
         ENDIF.
 *-------------------------------------------------------------------------*
-*             EntitySet -  ordersSet
+*             EntitySet -  OrdersSet
 *-------------------------------------------------------------------------*
-      WHEN 'ordersSet'.
+      WHEN 'OrdersSet'.
 *     Call the entity set generated method
           ordersset_update_entity(
                EXPORTING iv_entity_name     = iv_entity_name

@@ -15,52 +15,52 @@
     <SEOCOMPOTX>
      <CMPNAME>CUSTOMERSSET_CREATE_ENTITY</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Related EntitySet Name: customersSet</DESCRIPT>
+     <DESCRIPT>Related EntitySet Name: CustomersSet</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>CUSTOMERSSET_DELETE_ENTITY</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Related EntitySet Name: customersSet</DESCRIPT>
+     <DESCRIPT>Related EntitySet Name: CustomersSet</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>CUSTOMERSSET_GET_ENTITY</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Related EntitySet Name: customersSet</DESCRIPT>
+     <DESCRIPT>Related EntitySet Name: CustomersSet</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>CUSTOMERSSET_GET_ENTITYSET</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Related EntitySet Name: customersSet</DESCRIPT>
+     <DESCRIPT>Related EntitySet Name: CustomersSet</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>CUSTOMERSSET_UPDATE_ENTITY</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Related EntitySet Name: customersSet</DESCRIPT>
+     <DESCRIPT>Related EntitySet Name: CustomersSet</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>ORDERSSET_CREATE_ENTITY</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Related EntitySet Name: ordersSet</DESCRIPT>
+     <DESCRIPT>Related EntitySet Name: OrdersSet</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>ORDERSSET_DELETE_ENTITY</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Related EntitySet Name: ordersSet</DESCRIPT>
+     <DESCRIPT>Related EntitySet Name: OrdersSet</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>ORDERSSET_GET_ENTITY</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Related EntitySet Name: ordersSet</DESCRIPT>
+     <DESCRIPT>Related EntitySet Name: OrdersSet</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>ORDERSSET_GET_ENTITYSET</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Related EntitySet Name: ordersSet</DESCRIPT>
+     <DESCRIPT>Related EntitySet Name: OrdersSet</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>ORDERSSET_UPDATE_ENTITY</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Related EntitySet Name: ordersSet</DESCRIPT>
+     <DESCRIPT>Related EntitySet Name: OrdersSet</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>PAYMENTSSET_CREATE_ENTITY</CMPNAME>

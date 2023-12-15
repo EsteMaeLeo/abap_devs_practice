@@ -15,19 +15,7 @@
     <item>
      <ID>I</ID>
      <KEY>001</KEY>
-     <ENTRY>Customer ID</ENTRY>
-     <LENGTH>132</LENGTH>
-    </item>
-    <item>
-     <ID>I</ID>
-     <KEY>002</KEY>
-     <ENTRY>Ship Country</ENTRY>
-     <LENGTH>132</LENGTH>
-    </item>
-    <item>
-     <ID>I</ID>
-     <KEY>003</KEY>
-     <ENTRY>Document Order</ENTRY>
+     <ENTRY>Customer Id</ENTRY>
      <LENGTH>132</LENGTH>
     </item>
     <item>
@@ -44,26 +32,98 @@
     </item>
     <item>
      <ID>I</ID>
-     <KEY>006</KEY>
-     <ENTRY>City</ENTRY>
+     <KEY>009</KEY>
+     <ENTRY>Phone</ENTRY>
      <LENGTH>132</LENGTH>
     </item>
     <item>
      <ID>I</ID>
-     <KEY>007</KEY>
-     <ENTRY>Country</ENTRY>
+     <KEY>010</KEY>
+     <ENTRY>Order Id</ENTRY>
      <LENGTH>132</LENGTH>
     </item>
     <item>
      <ID>I</ID>
-     <KEY>008</KEY>
+     <KEY>011</KEY>
      <ENTRY>Postal Code</ENTRY>
      <LENGTH>132</LENGTH>
     </item>
     <item>
      <ID>I</ID>
-     <KEY>009</KEY>
-     <ENTRY>Phone</ENTRY>
+     <KEY>012</KEY>
+     <ENTRY>Order Id</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>013</KEY>
+     <ENTRY>Customer Id</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>014</KEY>
+     <ENTRY>Payment Id</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>015</KEY>
+     <ENTRY>Order date</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>016</KEY>
+     <ENTRY>Ship date</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>017</KEY>
+     <ENTRY>Ship via</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>018</KEY>
+     <ENTRY>Postal Code</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>019</KEY>
+     <ENTRY>Builder Number</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>020</KEY>
+     <ENTRY>Country</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>021</KEY>
+     <ENTRY>Document Order</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>022</KEY>
+     <ENTRY>Payment Id</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>023</KEY>
+     <ENTRY>Order Id</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>024</KEY>
+     <ENTRY>Status</ENTRY>
      <LENGTH>132</LENGTH>
     </item>
    </TPOOL>
