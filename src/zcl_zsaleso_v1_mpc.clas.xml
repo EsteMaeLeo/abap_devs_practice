@@ -150,8 +150,31 @@
      <ENTRY>Value</ENTRY>
      <LENGTH>132</LENGTH>
     </item>
+    <item>
+     <ID>I</ID>
+     <KEY>029</KEY>
+     <ENTRY>B/P customer</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>030</KEY>
+     <ENTRY>Customer Number</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>031</KEY>
+     <ENTRY>Customer name</ENTRY>
+     <LENGTH>132</LENGTH>
+    </item>
    </TPOOL>
    <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>DEFINE_BRFSHCUSTOMID</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>DEFINE_BRFSHCUSTOMID</DESCRIPT>
+    </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>DEFINE_CONFIRMORDER</CMPNAME>
      <LANGU>E</LANGU>
