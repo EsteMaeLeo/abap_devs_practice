@@ -6,9 +6,10 @@ class ZCL_ZSALESO_V1_MPC definition
 public section.
 
   types:
-         TS_CUSTOMERS type ZCUSTOMERS .
-  types:
-    TT_CUSTOMERS type standard table of TS_CUSTOMERS .
+        begin of TS_PAYMENTSTATUS,
+        STATUS type /SLOAP/STATUS,
+        PAYMENTID type /BI0/OIOBJECTID,
+    end of TS_PAYMENTSTATUS .
   types:
        begin of ts_text_element,
       artifact_name  type c length 40,       " technical name
@@ -19,6 +20,10 @@ public section.
    end of ts_text_element .
   types:
              tt_text_elements type standard table of ts_text_element with key text_symbol .
+  types:
+         TS_CUSTOMERS type ZCUSTOMERS .
+  types:
+    TT_CUSTOMERS type standard table of TS_CUSTOMERS .
   types:
          TS_ORDERS type ZORDERS .
   types:
@@ -94,6 +99,9 @@ private section.
   methods DEFINE_ASSOCIATIONS
     raising
       /IWBEP/CX_MGW_MED_EXCEPTION .
+  methods DEFINE_ACTIONS
+    raising
+      /IWBEP/CX_MGW_MED_EXCEPTION .
 ENDCLASS.
 
 
@@ -119,6 +127,48 @@ define_orderlist( ).
 define_confirmorder( ).
 define_brfshcustomid( ).
 define_associations( ).
+define_actions( ).
+  endmethod.
+
+
+  method DEFINE_ACTIONS.
+*&---------------------------------------------------------------------*
+*&           Generated code for the MODEL PROVIDER BASE CLASS         &*
+*&                                                                     &*
+*&  !!!NEVER MODIFY THIS CLASS. IN CASE YOU WANT TO CHANGE THE MODEL  &*
+*&        DO THIS IN THE MODEL PROVIDER SUBCLASS!!!                   &*
+*&                                                                     &*
+*&---------------------------------------------------------------------*
+
+
+data:
+lo_action         type ref to /iwbep/if_mgw_odata_action,                 "#EC NEEDED
+lo_parameter      type ref to /iwbep/if_mgw_odata_parameter.              "#EC NEEDED
+
+***********************************************************************************************************************************
+*   ACTION - PaymentStatus
+***********************************************************************************************************************************
+
+lo_action = model->create_action( 'PaymentStatus' ).  "#EC NOTEXT
+*Set return entity type
+lo_action->set_return_entity_type( 'Payments' ). "#EC NOTEXT
+*Set HTTP method GET or POST
+lo_action->set_http_method( 'POST' ). "#EC NOTEXT
+*Set the action for entity
+lo_action->set_action_for( 'Payments' ).        "#EC NOTEXT
+* Set return type multiplicity
+lo_action->set_return_multiplicity( '1' ). "#EC NOTEXT
+***********************************************************************************************************************************
+* Parameters
+***********************************************************************************************************************************
+
+lo_parameter = lo_action->create_input_parameter( iv_parameter_name = 'Status'    iv_abap_fieldname = 'STATUS' ). "#EC NOTEXT
+lo_parameter->/iwbep/if_mgw_odata_property~set_type_edm_string( ).
+lo_parameter->set_maxlength( iv_max_length = 20 ). "#EC NOTEXT
+lo_parameter = lo_action->create_input_parameter( iv_parameter_name = 'PaymentId'    iv_abap_fieldname = 'PAYMENTID' ). "#EC NOTEXT
+lo_parameter->/iwbep/if_mgw_odata_property~set_type_edm_string( ).
+lo_parameter->set_maxlength( iv_max_length = 10 ). "#EC NOTEXT
+lo_action->bind_input_structure( iv_structure_name  = 'ZCL_ZSALESO_V1_MPC=>TS_PAYMENTSTATUS' ). "#EC NOTEXT
   endmethod.
 
 
@@ -934,7 +984,7 @@ lo_entity_set->set_filter_required( abap_false ).
 *&---------------------------------------------------------------------*
 
 
-  CONSTANTS: lc_gen_date_time TYPE timestamp VALUE '20231218105613'.                  "#EC NOTEXT
+  CONSTANTS: lc_gen_date_time TYPE timestamp VALUE '20231222113510'.                  "#EC NOTEXT
   rv_last_modified = super->get_last_modified( ).
   IF rv_last_modified LT lc_gen_date_time.
     rv_last_modified = lc_gen_date_time.
