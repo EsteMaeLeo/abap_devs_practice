@@ -6,10 +6,7 @@ class ZCL_ZSALESO_V1_MPC definition
 public section.
 
   types:
-        begin of TS_PAYMENTSTATUS,
-        STATUS type /SLOAP/STATUS,
-        PAYMENTID type /BI0/OIOBJECTID,
-    end of TS_PAYMENTSTATUS .
+          SHIPADDRESS type ZST_SHIPADDRESS .
   types:
        begin of ts_text_element,
       artifact_name  type c length 40,       " technical name
@@ -21,11 +18,16 @@ public section.
   types:
              tt_text_elements type standard table of ts_text_element with key text_symbol .
   types:
+        begin of TS_PAYMENTSTATUS,
+        STATUS type /SLOAP/STATUS,
+        PAYMENTID type /BI0/OIOBJECTID,
+    end of TS_PAYMENTSTATUS .
+  types:
          TS_CUSTOMERS type ZCUSTOMERS .
   types:
     TT_CUSTOMERS type standard table of TS_CUSTOMERS .
   types:
-         TS_ORDERS type ZORDERS .
+         TS_ORDERS type ZST_ORDERS_CT .
   types:
     TT_ORDERS type standard table of TS_ORDERS .
   types:
@@ -61,6 +63,7 @@ public section.
   constants GC_ORDERLIST type /IWBEP/IF_MGW_MED_ODATA_TYPES=>TY_E_MED_ENTITY_NAME value 'OrderList' ##NO_TEXT.
   constants GC_ORDERS type /IWBEP/IF_MGW_MED_ODATA_TYPES=>TY_E_MED_ENTITY_NAME value 'Orders' ##NO_TEXT.
   constants GC_PAYMENTS type /IWBEP/IF_MGW_MED_ODATA_TYPES=>TY_E_MED_ENTITY_NAME value 'Payments' ##NO_TEXT.
+  constants GC_SHIPADDRESS type /IWBEP/IF_MGW_MED_ODATA_TYPES=>TY_E_MED_ENTITY_NAME value 'Shipaddress' ##NO_TEXT.
 
   methods LOAD_TEXT_ELEMENTS
   final
@@ -78,6 +81,9 @@ private section.
 
   constants GC_INCL_NAME type STRING value 'ZCL_ZSALESO_V1_MPC============CP' ##NO_TEXT.
 
+  methods DEFINE_COMPLEXTYPES
+    raising
+      /IWBEP/CX_MGW_MED_EXCEPTION .
   methods DEFINE_CUSTOMERS
     raising
       /IWBEP/CX_MGW_MED_EXCEPTION .
@@ -120,6 +126,7 @@ CLASS ZCL_ZSALESO_V1_MPC IMPLEMENTATION.
 
 model->set_schema_namespace( 'ZSALESO_V1_SRV' ).
 
+define_complextypes( ).
 define_customers( ).
 define_orders( ).
 define_payments( ).
@@ -337,6 +344,74 @@ lo_entity_set->set_addressable( abap_true ).
 lo_entity_set->set_has_ftxt_search( abap_false ).
 lo_entity_set->set_subscribable( abap_false ).
 lo_entity_set->set_filter_required( abap_false ).
+  endmethod.
+
+
+  method DEFINE_COMPLEXTYPES.
+*&---------------------------------------------------------------------*
+*&           Generated code for the MODEL PROVIDER BASE CLASS         &*
+*&                                                                     &*
+*&  !!!NEVER MODIFY THIS CLASS. IN CASE YOU WANT TO CHANGE THE MODEL  &*
+*&        DO THIS IN THE MODEL PROVIDER SUBCLASS!!!                   &*
+*&                                                                     &*
+*&---------------------------------------------------------------------*
+
+
+ data:
+       lo_annotation     type ref to /iwbep/if_mgw_odata_annotation,             "#EC NEEDED
+       lo_complex_type   type ref to /iwbep/if_mgw_odata_cmplx_type,             "#EC NEEDED
+       lo_property       type ref to /iwbep/if_mgw_odata_property.                "#EC NEEDED
+
+***********************************************************************************************************************************
+*   COMPLEX TYPE - Shipaddress
+***********************************************************************************************************************************
+lo_complex_type = model->create_complex_type( 'Shipaddress' ). "#EC NOTEXT
+
+***********************************************************************************************************************************
+*Properties
+***********************************************************************************************************************************
+lo_property = lo_complex_type->create_property( iv_property_name  = 'City' iv_abap_fieldname = 'CITY' ). "#EC NOTEXT
+lo_property->set_type_edm_string( ).
+lo_property->set_maxlength( iv_max_length = 40 ).
+lo_property->set_creatable( abap_false ).
+lo_property->set_updatable( abap_false ).
+lo_property->set_sortable( abap_false ).
+lo_property->set_nullable( abap_false ).
+lo_property->set_filterable( abap_false ).
+lo_property = lo_complex_type->create_property( iv_property_name  = 'Street' iv_abap_fieldname = 'STREET' ). "#EC NOTEXT
+lo_property->set_type_edm_string( ).
+lo_property->set_maxlength( iv_max_length = 30 ).
+lo_property->set_creatable( abap_false ).
+lo_property->set_updatable( abap_false ).
+lo_property->set_sortable( abap_false ).
+lo_property->set_nullable( abap_false ).
+lo_property->set_filterable( abap_false ).
+lo_property = lo_complex_type->create_property( iv_property_name  = 'Postalcode' iv_abap_fieldname = 'POSTALCODE' ). "#EC NOTEXT
+lo_property->set_type_edm_string( ).
+lo_property->set_maxlength( iv_max_length = 10 ).
+lo_property->set_creatable( abap_false ).
+lo_property->set_updatable( abap_false ).
+lo_property->set_sortable( abap_false ).
+lo_property->set_nullable( abap_false ).
+lo_property->set_filterable( abap_false ).
+lo_property = lo_complex_type->create_property( iv_property_name  = 'Buildernumber' iv_abap_fieldname = 'BUILDERNUMBER' ). "#EC NOTEXT
+lo_property->set_type_edm_string( ).
+lo_property->set_maxlength( iv_max_length = 5 ).
+lo_property->set_creatable( abap_false ).
+lo_property->set_updatable( abap_false ).
+lo_property->set_sortable( abap_false ).
+lo_property->set_nullable( abap_false ).
+lo_property->set_filterable( abap_false ).
+lo_property = lo_complex_type->create_property( iv_property_name  = 'Country' iv_abap_fieldname = 'COUNTRY' ). "#EC NOTEXT
+lo_property->set_type_edm_string( ).
+lo_property->set_maxlength( iv_max_length = 50 ).
+lo_property->set_creatable( abap_false ).
+lo_property->set_updatable( abap_false ).
+lo_property->set_sortable( abap_false ).
+lo_property->set_nullable( abap_false ).
+lo_property->set_filterable( abap_false ).
+lo_complex_type->bind_structure( iv_structure_name   = 'ZST_SHIPADDRESS'
+                                 iv_bind_conversions = 'X' ). "#EC NOTEXT
   endmethod.
 
 
@@ -671,13 +746,15 @@ lo_entity_type = model->create_entity_type( iv_entity_type_name = 'Orders' iv_de
 *Properties
 ***********************************************************************************************************************************
 
+lo_complex_type = lo_entity_type->create_complex_property( iv_property_name = 'Shipaddress'
+                                                           iv_complex_type_name = 'Shipaddress'
+                                                           iv_abap_fieldname    = 'SHIPADDRESS' ). "#EC NOTEXT
 lo_property = lo_entity_type->create_property( iv_property_name = 'Orderid' iv_abap_fieldname = 'ORDERID' ). "#EC NOTEXT
-lo_property->set_label_from_text_element( iv_text_element_symbol = '012' iv_text_element_container = gc_incl_name ).  "#EC NOTEXT
 lo_property->set_is_key( ).
 lo_property->set_type_edm_string( ).
 lo_property->set_maxlength( iv_max_length = 10 ). "#EC NOTEXT
-lo_property->set_creatable( abap_true ).
-lo_property->set_updatable( abap_true ).
+lo_property->set_creatable( abap_false ).
+lo_property->set_updatable( abap_false ).
 lo_property->set_sortable( abap_false ).
 lo_property->set_nullable( abap_false ).
 lo_property->set_filterable( abap_false ).
@@ -686,11 +763,10 @@ lo_property->/iwbep/if_mgw_odata_annotatabl~create_annotation( 'sap' )->add(
         iv_key      = 'unicode'
         iv_value    = 'false' ).
 lo_property = lo_entity_type->create_property( iv_property_name = 'Customerid' iv_abap_fieldname = 'CUSTOMERID' ). "#EC NOTEXT
-lo_property->set_label_from_text_element( iv_text_element_symbol = '013' iv_text_element_container = gc_incl_name ).  "#EC NOTEXT
 lo_property->set_type_edm_string( ).
 lo_property->set_maxlength( iv_max_length = 10 ). "#EC NOTEXT
-lo_property->set_creatable( abap_true ).
-lo_property->set_updatable( abap_true ).
+lo_property->set_creatable( abap_false ).
+lo_property->set_updatable( abap_false ).
 lo_property->set_sortable( abap_false ).
 lo_property->set_nullable( abap_false ).
 lo_property->set_filterable( abap_false ).
@@ -699,11 +775,10 @@ lo_property->/iwbep/if_mgw_odata_annotatabl~create_annotation( 'sap' )->add(
         iv_key      = 'unicode'
         iv_value    = 'false' ).
 lo_property = lo_entity_type->create_property( iv_property_name = 'Paymentid' iv_abap_fieldname = 'PAYMENTID' ). "#EC NOTEXT
-lo_property->set_label_from_text_element( iv_text_element_symbol = '014' iv_text_element_container = gc_incl_name ).  "#EC NOTEXT
 lo_property->set_type_edm_string( ).
 lo_property->set_maxlength( iv_max_length = 10 ). "#EC NOTEXT
-lo_property->set_creatable( abap_true ).
-lo_property->set_updatable( abap_true ).
+lo_property->set_creatable( abap_false ).
+lo_property->set_updatable( abap_false ).
 lo_property->set_sortable( abap_false ).
 lo_property->set_nullable( abap_false ).
 lo_property->set_filterable( abap_false ).
@@ -712,11 +787,10 @@ lo_property->/iwbep/if_mgw_odata_annotatabl~create_annotation( 'sap' )->add(
         iv_key      = 'unicode'
         iv_value    = 'false' ).
 lo_property = lo_entity_type->create_property( iv_property_name = 'Orderdate' iv_abap_fieldname = 'ORDERDATE' ). "#EC NOTEXT
-lo_property->set_label_from_text_element( iv_text_element_symbol = '015' iv_text_element_container = gc_incl_name ).  "#EC NOTEXT
 lo_property->set_type_edm_datetime( ).
 lo_property->set_precison( iv_precision = 7 ). "#EC NOTEXT
-lo_property->set_creatable( abap_true ).
-lo_property->set_updatable( abap_true ).
+lo_property->set_creatable( abap_false ).
+lo_property->set_updatable( abap_false ).
 lo_property->set_sortable( abap_false ).
 lo_property->set_nullable( abap_false ).
 lo_property->set_filterable( abap_false ).
@@ -725,11 +799,10 @@ lo_property->/iwbep/if_mgw_odata_annotatabl~create_annotation( 'sap' )->add(
         iv_key      = 'unicode'
         iv_value    = 'false' ).
 lo_property = lo_entity_type->create_property( iv_property_name = 'Shipdate' iv_abap_fieldname = 'SHIPDATE' ). "#EC NOTEXT
-lo_property->set_label_from_text_element( iv_text_element_symbol = '016' iv_text_element_container = gc_incl_name ).  "#EC NOTEXT
 lo_property->set_type_edm_datetime( ).
 lo_property->set_precison( iv_precision = 7 ). "#EC NOTEXT
-lo_property->set_creatable( abap_true ).
-lo_property->set_updatable( abap_true ).
+lo_property->set_creatable( abap_false ).
+lo_property->set_updatable( abap_false ).
 lo_property->set_sortable( abap_false ).
 lo_property->set_nullable( abap_false ).
 lo_property->set_filterable( abap_false ).
@@ -738,75 +811,11 @@ lo_property->/iwbep/if_mgw_odata_annotatabl~create_annotation( 'sap' )->add(
         iv_key      = 'unicode'
         iv_value    = 'false' ).
 lo_property = lo_entity_type->create_property( iv_property_name = 'Shipvia' iv_abap_fieldname = 'SHIPVIA' ). "#EC NOTEXT
-lo_property->set_label_from_text_element( iv_text_element_symbol = '017' iv_text_element_container = gc_incl_name ).  "#EC NOTEXT
 lo_property->set_type_edm_string( ).
 lo_property->set_maxlength( iv_max_length = 10 ). "#EC NOTEXT
 lo_property->set_conversion_exit( 'ALPHA' ). "#EC NOTEXT
-lo_property->set_creatable( abap_true ).
-lo_property->set_updatable( abap_true ).
-lo_property->set_sortable( abap_false ).
-lo_property->set_nullable( abap_false ).
-lo_property->set_filterable( abap_false ).
-lo_property->/iwbep/if_mgw_odata_annotatabl~create_annotation( 'sap' )->add(
-      EXPORTING
-        iv_key      = 'unicode'
-        iv_value    = 'false' ).
-lo_property = lo_entity_type->create_property( iv_property_name = 'City' iv_abap_fieldname = 'CITY' ). "#EC NOTEXT
-lo_property->set_type_edm_string( ).
-lo_property->set_maxlength( iv_max_length = 40 ). "#EC NOTEXT
-lo_property->set_creatable( abap_true ).
-lo_property->set_updatable( abap_true ).
-lo_property->set_sortable( abap_false ).
-lo_property->set_nullable( abap_false ).
-lo_property->set_filterable( abap_false ).
-lo_property->/iwbep/if_mgw_odata_annotatabl~create_annotation( 'sap' )->add(
-      EXPORTING
-        iv_key      = 'unicode'
-        iv_value    = 'false' ).
-lo_property = lo_entity_type->create_property( iv_property_name = 'Street' iv_abap_fieldname = 'STREET' ). "#EC NOTEXT
-lo_property->set_type_edm_string( ).
-lo_property->set_maxlength( iv_max_length = 30 ). "#EC NOTEXT
-lo_property->set_creatable( abap_true ).
-lo_property->set_updatable( abap_true ).
-lo_property->set_sortable( abap_false ).
-lo_property->set_nullable( abap_false ).
-lo_property->set_filterable( abap_false ).
-lo_property->/iwbep/if_mgw_odata_annotatabl~create_annotation( 'sap' )->add(
-      EXPORTING
-        iv_key      = 'unicode'
-        iv_value    = 'false' ).
-lo_property = lo_entity_type->create_property( iv_property_name = 'Postalcode' iv_abap_fieldname = 'POSTALCODE' ). "#EC NOTEXT
-lo_property->set_label_from_text_element( iv_text_element_symbol = '018' iv_text_element_container = gc_incl_name ).  "#EC NOTEXT
-lo_property->set_type_edm_string( ).
-lo_property->set_maxlength( iv_max_length = 10 ). "#EC NOTEXT
-lo_property->set_creatable( abap_true ).
-lo_property->set_updatable( abap_true ).
-lo_property->set_sortable( abap_false ).
-lo_property->set_nullable( abap_false ).
-lo_property->set_filterable( abap_false ).
-lo_property->/iwbep/if_mgw_odata_annotatabl~create_annotation( 'sap' )->add(
-      EXPORTING
-        iv_key      = 'unicode'
-        iv_value    = 'false' ).
-lo_property = lo_entity_type->create_property( iv_property_name = 'Buildernumber' iv_abap_fieldname = 'BUILDERNUMBER' ). "#EC NOTEXT
-lo_property->set_label_from_text_element( iv_text_element_symbol = '019' iv_text_element_container = gc_incl_name ).  "#EC NOTEXT
-lo_property->set_type_edm_string( ).
-lo_property->set_maxlength( iv_max_length = 5 ). "#EC NOTEXT
-lo_property->set_creatable( abap_true ).
-lo_property->set_updatable( abap_true ).
-lo_property->set_sortable( abap_false ).
-lo_property->set_nullable( abap_false ).
-lo_property->set_filterable( abap_false ).
-lo_property->/iwbep/if_mgw_odata_annotatabl~create_annotation( 'sap' )->add(
-      EXPORTING
-        iv_key      = 'unicode'
-        iv_value    = 'false' ).
-lo_property = lo_entity_type->create_property( iv_property_name = 'Country' iv_abap_fieldname = 'COUNTRY' ). "#EC NOTEXT
-lo_property->set_label_from_text_element( iv_text_element_symbol = '020' iv_text_element_container = gc_incl_name ).  "#EC NOTEXT
-lo_property->set_type_edm_string( ).
-lo_property->set_maxlength( iv_max_length = 50 ). "#EC NOTEXT
-lo_property->set_creatable( abap_true ).
-lo_property->set_updatable( abap_true ).
+lo_property->set_creatable( abap_false ).
+lo_property->set_updatable( abap_false ).
 lo_property->set_sortable( abap_false ).
 lo_property->set_nullable( abap_false ).
 lo_property->set_filterable( abap_false ).
@@ -817,8 +826,8 @@ lo_property->/iwbep/if_mgw_odata_annotatabl~create_annotation( 'sap' )->add(
 lo_property = lo_entity_type->create_property( iv_property_name = 'Documentorder' iv_abap_fieldname = 'DOCUMENTORDER' ). "#EC NOTEXT
 lo_property->set_label_from_text_element( iv_text_element_symbol = '021' iv_text_element_container = gc_incl_name ).  "#EC NOTEXT
 lo_property->set_type_edm_binary( ).
-lo_property->set_creatable( abap_true ).
-lo_property->set_updatable( abap_true ).
+lo_property->set_creatable( abap_false ).
+lo_property->set_updatable( abap_false ).
 lo_property->set_sortable( abap_false ).
 lo_property->set_nullable( abap_false ).
 lo_property->set_filterable( abap_false ).
@@ -827,7 +836,7 @@ lo_property->/iwbep/if_mgw_odata_annotatabl~create_annotation( 'sap' )->add(
         iv_key      = 'unicode'
         iv_value    = 'false' ).
 
-lo_entity_type->bind_structure( iv_structure_name   = 'ZORDERS'
+lo_entity_type->bind_structure( iv_structure_name   = 'ZST_ORDERS_CT'
                                 iv_bind_conversions = 'X' ). "#EC NOTEXT
 
 
@@ -984,7 +993,7 @@ lo_entity_set->set_filter_required( abap_false ).
 *&---------------------------------------------------------------------*
 
 
-  CONSTANTS: lc_gen_date_time TYPE timestamp VALUE '20231222113510'.                  "#EC NOTEXT
+  CONSTANTS: lc_gen_date_time TYPE timestamp VALUE '20231223102844'.                  "#EC NOTEXT
   rv_last_modified = super->get_last_modified( ).
   IF rv_last_modified LT lc_gen_date_time.
     rv_last_modified = lc_gen_date_time.
@@ -1051,69 +1060,6 @@ ls_text_element-text_symbol            = '009'.              "#EC NOTEXT
 APPEND ls_text_element TO rt_text_elements.
 
 
-clear ls_text_element.
-ls_text_element-artifact_name          = 'Orderid'.                 "#EC NOTEXT
-ls_text_element-artifact_type          = 'PROP'.                                       "#EC NOTEXT
-ls_text_element-parent_artifact_name   = 'Orders'.                            "#EC NOTEXT
-ls_text_element-parent_artifact_type   = 'ETYP'.                                       "#EC NOTEXT
-ls_text_element-text_symbol            = '012'.              "#EC NOTEXT
-APPEND ls_text_element TO rt_text_elements.
-clear ls_text_element.
-ls_text_element-artifact_name          = 'Customerid'.                 "#EC NOTEXT
-ls_text_element-artifact_type          = 'PROP'.                                       "#EC NOTEXT
-ls_text_element-parent_artifact_name   = 'Orders'.                            "#EC NOTEXT
-ls_text_element-parent_artifact_type   = 'ETYP'.                                       "#EC NOTEXT
-ls_text_element-text_symbol            = '013'.              "#EC NOTEXT
-APPEND ls_text_element TO rt_text_elements.
-clear ls_text_element.
-ls_text_element-artifact_name          = 'Paymentid'.                 "#EC NOTEXT
-ls_text_element-artifact_type          = 'PROP'.                                       "#EC NOTEXT
-ls_text_element-parent_artifact_name   = 'Orders'.                            "#EC NOTEXT
-ls_text_element-parent_artifact_type   = 'ETYP'.                                       "#EC NOTEXT
-ls_text_element-text_symbol            = '014'.              "#EC NOTEXT
-APPEND ls_text_element TO rt_text_elements.
-clear ls_text_element.
-ls_text_element-artifact_name          = 'Orderdate'.                 "#EC NOTEXT
-ls_text_element-artifact_type          = 'PROP'.                                       "#EC NOTEXT
-ls_text_element-parent_artifact_name   = 'Orders'.                            "#EC NOTEXT
-ls_text_element-parent_artifact_type   = 'ETYP'.                                       "#EC NOTEXT
-ls_text_element-text_symbol            = '015'.              "#EC NOTEXT
-APPEND ls_text_element TO rt_text_elements.
-clear ls_text_element.
-ls_text_element-artifact_name          = 'Shipdate'.                 "#EC NOTEXT
-ls_text_element-artifact_type          = 'PROP'.                                       "#EC NOTEXT
-ls_text_element-parent_artifact_name   = 'Orders'.                            "#EC NOTEXT
-ls_text_element-parent_artifact_type   = 'ETYP'.                                       "#EC NOTEXT
-ls_text_element-text_symbol            = '016'.              "#EC NOTEXT
-APPEND ls_text_element TO rt_text_elements.
-clear ls_text_element.
-ls_text_element-artifact_name          = 'Shipvia'.                 "#EC NOTEXT
-ls_text_element-artifact_type          = 'PROP'.                                       "#EC NOTEXT
-ls_text_element-parent_artifact_name   = 'Orders'.                            "#EC NOTEXT
-ls_text_element-parent_artifact_type   = 'ETYP'.                                       "#EC NOTEXT
-ls_text_element-text_symbol            = '017'.              "#EC NOTEXT
-APPEND ls_text_element TO rt_text_elements.
-clear ls_text_element.
-ls_text_element-artifact_name          = 'Postalcode'.                 "#EC NOTEXT
-ls_text_element-artifact_type          = 'PROP'.                                       "#EC NOTEXT
-ls_text_element-parent_artifact_name   = 'Orders'.                            "#EC NOTEXT
-ls_text_element-parent_artifact_type   = 'ETYP'.                                       "#EC NOTEXT
-ls_text_element-text_symbol            = '018'.              "#EC NOTEXT
-APPEND ls_text_element TO rt_text_elements.
-clear ls_text_element.
-ls_text_element-artifact_name          = 'Buildernumber'.                 "#EC NOTEXT
-ls_text_element-artifact_type          = 'PROP'.                                       "#EC NOTEXT
-ls_text_element-parent_artifact_name   = 'Orders'.                            "#EC NOTEXT
-ls_text_element-parent_artifact_type   = 'ETYP'.                                       "#EC NOTEXT
-ls_text_element-text_symbol            = '019'.              "#EC NOTEXT
-APPEND ls_text_element TO rt_text_elements.
-clear ls_text_element.
-ls_text_element-artifact_name          = 'Country'.                 "#EC NOTEXT
-ls_text_element-artifact_type          = 'PROP'.                                       "#EC NOTEXT
-ls_text_element-parent_artifact_name   = 'Orders'.                            "#EC NOTEXT
-ls_text_element-parent_artifact_type   = 'ETYP'.                                       "#EC NOTEXT
-ls_text_element-text_symbol            = '020'.              "#EC NOTEXT
-APPEND ls_text_element TO rt_text_elements.
 clear ls_text_element.
 ls_text_element-artifact_name          = 'Documentorder'.                 "#EC NOTEXT
 ls_text_element-artifact_type          = 'PROP'.                                       "#EC NOTEXT
