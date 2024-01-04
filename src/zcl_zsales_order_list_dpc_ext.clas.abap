@@ -38,6 +38,7 @@ CLASS ZCL_ZSALES_ORDER_LIST_DPC_EXT IMPLEMENTATION.
 ** CATCH /iwbep/cx_mgw_busi_exception .
 ** CATCH /iwbep/cx_mgw_tech_exception .
 **ENDTRY.
+    CONSTANTS: lc_bapi_msg_type_error   TYPE bapi_mtype VALUE 'E'.
 *******************************************************************
 ***                     INSIDE OUT                              ***
 *******************************************************************
@@ -69,6 +70,8 @@ CLASS ZCL_ZSALES_ORDER_LIST_DPC_EXT IMPLEMENTATION.
         DATA(li_epm_so_header) = CAST if_epm_so_header( cl_epm_service_facade=>get_bo( if_epm_so_header=>gc_bo_name ) ).
         DATA(li_message_buffer) = CAST if_epm_message_buffer( cl_epm_service_facade=>get_message_buffer( ) ).
 
+        lv_max_rows = 30.
+
         " retrieve EPM SO header data according to given selection criteria
         li_epm_so_header->query_by_header(
           EXPORTING
@@ -79,8 +82,26 @@ CLASS ZCL_ZSALES_ORDER_LIST_DPC_EXT IMPLEMENTATION.
           IMPORTING
              et_data                 = lt_epm_so_header_data[] ).
 
+        FREE et_entityset.
+
         et_entityset = CORRESPONDING #( lt_epm_so_header_data ).
       CATCH cx_epm_exception INTO DATA(lo_ex).
+
+        DATA: ls_message    TYPE bapiret2,
+              lt_bapirettab TYPE bapirettab..
+
+        CALL FUNCTION 'BALW_BAPIRETURN_GET2'
+          EXPORTING
+            type   = lc_bapi_msg_type_error
+            cl     = lo_ex->if_t100_message~t100key-msgid
+            number = lo_ex->if_t100_message~t100key-msgno
+            par1   = lo_ex->mv_var1
+            par2   = lo_ex->mv_var2
+            par3   = lo_ex->mv_var3
+            par4   = lo_ex->mv_var4
+          IMPORTING
+            return = ls_message.
+        APPEND ls_message TO lt_bapirettab[].
 
     ENDTRY.
   ENDMETHOD.
