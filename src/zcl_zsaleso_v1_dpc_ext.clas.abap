@@ -5,16 +5,20 @@ CLASS zcl_zsaleso_v1_dpc_ext DEFINITION
 
   PUBLIC SECTION.
   PROTECTED SECTION.
-    METHODS:
-      customersset_create_entity REDEFINITION,
-      ordersset_create_entity REDEFINITION,
-      paymentsset_create_entity REDEFINITION.
+
+    METHODS customersset_create_entity REDEFINITION .
+    METHODS customersset_get_entity REDEFINITION .
+    METHODS customersset_get_entityset REDEFINITION .
+    METHODS ordersset_create_entity REDEFINITION .
+    METHODS paymentsset_create_entity REDEFINITION .
+
   PRIVATE SECTION.
 ENDCLASS.
 
 
 
 CLASS zcl_zsaleso_v1_dpc_ext IMPLEMENTATION.
+
 
   METHOD customersset_create_entity.
 
@@ -38,6 +42,41 @@ CLASS zcl_zsaleso_v1_dpc_ext IMPLEMENTATION.
     ENDIF.
 
   ENDMETHOD.
+
+  METHOD customersset_get_entity.
+
+    DATA(lv_customerid) = it_key_tab[ name = 'Customerid' ]-value.
+    SELECT SINGLE FROM zcustomers
+    FIELDS *
+        WHERE customerid EQ @lv_customerid
+        INTO @er_entity.
+
+  ENDMETHOD.
+
+  METHOD customersset_get_entityset.
+
+*CALL METHOD SUPER->CUSTOMERSSET_GET_ENTITYSET
+*  EXPORTING
+*    IV_ENTITY_NAME           =
+*    IV_ENTITY_SET_NAME       =
+*    IV_SOURCE_NAME           =
+*    IT_FILTER_SELECT_OPTIONS =
+*    IS_PAGING                =
+*    IT_KEY_TAB               =
+*    IT_NAVIGATION_PATH       =
+*    IT_ORDER                 =
+*    IV_FILTER_STRING         =
+*    IV_SEARCH_STRING         =
+**    io_tech_request_context  =
+**  IMPORTING
+**    et_entityset             =
+**    es_response_context      =
+*    .
+** CATCH /iwbep/cx_mgw_busi_exception .
+** CATCH /iwbep/cx_mgw_tech_exception .
+**ENDTRY.
+  ENDMETHOD.
+
 
   METHOD ordersset_create_entity.
 
@@ -74,6 +113,7 @@ CLASS zcl_zsaleso_v1_dpc_ext IMPLEMENTATION.
           textid = ls_message.
     ENDIF.
   ENDMETHOD.
+
 
   METHOD paymentsset_create_entity.
     DATA ls_payments TYPE zpayments.
