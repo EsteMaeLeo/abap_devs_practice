@@ -10,7 +10,7 @@ CLASS lcl_sales_v1 DEFINITION FINAL.
   PUBLIC SECTION.
 
     METHODS: create_mock_zcustomer,
-              reference_integer.
+      reference_integer.
 
   PRIVATE SECTION.
     DATA: lt_customers TYPE STANDARD TABLE OF zcustomers.
@@ -21,24 +21,35 @@ CLASS lcl_sales_v1 IMPLEMENTATION.
 
   METHOD create_mock_zcustomer.
 
-    DATA ls_customers TYPE zcustomers.
+    TYPES tt_zcustomers TYPE TABLE OF zcustomers WITH EMPTY KEY.
 
-    DATA lv_count TYPE i.
+    DATA :lx_root TYPE REF TO cx_root,
+          err_msg TYPE char200.
 
-    lv_count = 1.
-    ls_customers-customerid = lv_count.
-
-    ls_customers-customerid = |{ ls_customers-customerid  ALPHA = IN }|.
-
-    TYPES l_zcustomers TYPE TABLE OF zcustomers WITH EMPTY KEY.
-
-    lt_customers = VALUE l_zcustomers( FOR i = 1 UNTIL i > 10
+    lt_customers = VALUE tt_zcustomers( FOR i = 1 UNTIL i > 10
                                      ( customerid = i
-                                       orderid = 1
-                                       name = zcl_global_utils=>generate_char_number( i ) ) ).
+                                       orderid    = 1
+                                       name       = zcl_global_utils=>get_randm_string( 10 )
+                                       address    = |Address 1|
+                                       city       = |Springfield|
+                                       country    = |USA|
+                                       postalcode = zcl_global_utils=>get_random_numbers_int( EXPORTING
+                                                                                              min    = 999
+                                                                                              max    = 999 )
+                                       phone = zcl_global_utils=>get_random_numbers_int( EXPORTING
+                                                                                              min    = 99999
+                                                                                              max    = 99999 ) ) ).
 
-BREAK-POINT.
-    WRITE ls_customers-customerid .
+    cl_demo_output=>display( lt_customers ).
+
+    DELETE FROM zcustomers.
+
+    TRY.
+        INSERT zcustomers FROM TABLE  lt_customers.
+      CATCH cx_root INTO lx_root.
+
+        err_msg = lx_root->get_text( ).
+    ENDTRY.
 
 
   ENDMETHOD.
@@ -47,6 +58,14 @@ BREAK-POINT.
     TYPES t_itab TYPE TABLE OF i WITH EMPTY KEY.
     DATA(number) = NEW t_itab( FOR i = 1 UNTIL i > 10
                            ( i ) ).
+    DATA ls_customers TYPE zcustomers.
+
+    DATA lv_count TYPE i.
+
+    lv_count = 1.
+    ls_customers-customerid = lv_count.
+
+    ls_customers-customerid = |{ ls_customers-customerid  ALPHA = IN }|.
   ENDMETHOD.
 
 ENDCLASS.
