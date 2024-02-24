@@ -45,11 +45,20 @@ CLASS zcl_zsaleso_v1_dpc_ext IMPLEMENTATION.
 
   METHOD customersset_get_entity.
 
-    DATA(lv_customerid) = it_key_tab[ name = 'Customerid' ]-value.
-    SELECT SINGLE FROM zcustomers
-    FIELDS *
-        WHERE customerid EQ @lv_customerid
-        INTO @er_entity.
+    IF line_exists( it_key_tab[ name = 'Customerid' ] ).
+
+      DATA(lv_customerid) = it_key_tab[ name = 'Customerid' ]-value.
+
+      SELECT SINGLE FROM zcustomers
+      FIELDS *
+          WHERE customerid EQ @lv_customerid
+          INTO @er_entity.
+
+    ELSE.
+
+
+    ENDIF.
+
 
   ENDMETHOD.
 
