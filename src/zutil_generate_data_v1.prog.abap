@@ -5,11 +5,36 @@
 *&---------------------------------------------------------------------*
 REPORT zutil_generate_data_v1.
 
+SELECTION-SCREEN BEGIN OF BLOCK block1 WITH FRAME TITLE TEXT-t04.
+
+SELECTION-SCREEN SKIP.
+
+SELECTION-SCREEN BEGIN OF BLOCK block2 WITH FRAME TITLE TEXT-t10.
+
+"CRUD
+PARAMETERS: p_creat1 RADIOBUTTON GROUP crud.
+SELECTION-SCREEN BEGIN OF LINE.
+PARAMETERS  p_creat2 RADIOBUTTON  GROUP crud.
+SELECTION-SCREEN COMMENT 3(70) TEXT-t01 FOR FIELD p_creat2.
+SELECTION-SCREEN END OF LINE.
+
+PARAMETERS: p_update RADIOBUTTON GROUP crud,
+            p_delete RADIOBUTTON GROUP crud,
+            p_modify RADIOBUTTON GROUP crud.
+
+SELECTION-SCREEN END OF BLOCK block2.
+
+SELECTION-SCREEN END OF BLOCK block1.
+
+
 CLASS lcl_sales_v1 DEFINITION FINAL.
 
   PUBLIC SECTION.
 
+    CLASS-DATA: lv_rows TYPE i.
+
     METHODS: create_mock_zcustomer,
+      create_refdata,
       reference_integer.
 
   PRIVATE SECTION.
@@ -54,6 +79,22 @@ CLASS lcl_sales_v1 IMPLEMENTATION.
 
   ENDMETHOD.
 
+  METHOD create_refdata.
+
+    lcl_sales_v1=>lv_rows = 10.
+
+    SELECT FROM zuploadpersoncr
+      FIELDS id, code_electoral, name, first_last_name
+      INTO TABLE @DATA(it_person)
+      UP TO @lcl_sales_v1=>lv_rows ROWS.
+
+    IF LINES( it_person ) NE 0.
+
+
+
+    ENDIF.
+  ENDMETHOD.
+
   METHOD reference_integer.
     TYPES t_itab TYPE TABLE OF i WITH EMPTY KEY.
     DATA(number) = NEW t_itab( FOR i = 1 UNTIL i > 10
@@ -70,7 +111,15 @@ CLASS lcl_sales_v1 IMPLEMENTATION.
 
 ENDCLASS.
 
+INITIALIZATION.
+  DATA(lc_sales_v1) = NEW lcl_sales_v1( ).
+  lcl_sales_v1=>lv_rows = 0.
+
 START-OF-SELECTION.
 
-  DATA(lc_sales_v1) = NEW lcl_sales_v1( ).
-  lc_sales_v1->create_mock_zcustomer( ).
+  CASE abap_true.
+    WHEN p_creat1.
+      lc_sales_v1->create_mock_zcustomer( ).
+    WHEN p_creat2.
+      lc_sales_v1->create_refdata( ).
+  ENDCASE.
