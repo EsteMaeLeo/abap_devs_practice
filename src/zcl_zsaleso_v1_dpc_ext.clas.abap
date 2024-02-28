@@ -17,7 +17,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_zsaleso_v1_dpc_ext IMPLEMENTATION.
+CLASS ZCL_ZSALESO_V1_DPC_EXT IMPLEMENTATION.
 
 
   METHOD customersset_create_entity.
@@ -43,6 +43,7 @@ CLASS zcl_zsaleso_v1_dpc_ext IMPLEMENTATION.
 
   ENDMETHOD.
 
+
   METHOD customersset_get_entity.
 
     IF line_exists( it_key_tab[ name = 'Customerid' ] ).
@@ -61,6 +62,7 @@ CLASS zcl_zsaleso_v1_dpc_ext IMPLEMENTATION.
 
 
   ENDMETHOD.
+
 
   METHOD customersset_get_entityset.
 
@@ -144,5 +146,4 @@ CLASS zcl_zsaleso_v1_dpc_ext IMPLEMENTATION.
           textid = ls_message.
     ENDIF.
   ENDMETHOD.
-
 ENDCLASS.

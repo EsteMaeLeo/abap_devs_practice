@@ -31,10 +31,12 @@ CLASS lcl_sales_v1 DEFINITION FINAL.
 
   PUBLIC SECTION.
 
+    TYPES tt_zcustomers TYPE TABLE OF zcustomers WITH EMPTY KEY.
+
     CLASS-DATA: lv_rows TYPE i.
 
     METHODS: create_mock_zcustomer,
-      create_refdata,
+      create_refdata_zcustomer,
       reference_integer.
 
   PRIVATE SECTION.
@@ -45,8 +47,6 @@ ENDCLASS.
 CLASS lcl_sales_v1 IMPLEMENTATION.
 
   METHOD create_mock_zcustomer.
-
-    TYPES tt_zcustomers TYPE TABLE OF zcustomers WITH EMPTY KEY.
 
     DATA :lx_root TYPE REF TO cx_root,
           err_msg TYPE char200.
@@ -79,7 +79,10 @@ CLASS lcl_sales_v1 IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD create_refdata.
+  METHOD create_refdata_zcustomer.
+
+    DATA :lx_root TYPE REF TO cx_root,
+          err_msg TYPE char200.
 
     lcl_sales_v1=>lv_rows = 10.
 
@@ -88,10 +91,25 @@ CLASS lcl_sales_v1 IMPLEMENTATION.
       INTO TABLE @DATA(it_person)
       UP TO @lcl_sales_v1=>lv_rows ROWS.
 
-    IF LINES( it_person ) NE 0.
+    IF lines( it_person ) NE 0.
 
+      DELETE FROM zcustomers.
+      lcl_sales_v1=>lv_rows = 1.
 
-
+      lt_customers = VALUE tt_zcustomers( FOR wa_personcr IN it_person
+                                          (
+                                            customerid = wa_personcr-id
+                                            orderid    = wa_personcr-id + 1
+                                            name       = |{ wa_personcr-name }| & | | & |{ wa_personcr-first_last_name }|
+                                            address    = |Address 1|
+                                            city       = |Springfield|
+                                            country    = |USA|
+                                            postalcode = zcl_global_utils=>get_random_numbers_int( EXPORTING
+                                                                                                   min    = 10000
+                                                                                                   max    = 99999 )
+                                            phone = zcl_global_utils=>get_random_numbers_int( EXPORTING
+                                                                                                   min    = 1000000
+                                                                                                   max    = 9999999 ) ) ).
     ENDIF.
   ENDMETHOD.
 
@@ -116,10 +134,10 @@ INITIALIZATION.
   lcl_sales_v1=>lv_rows = 0.
 
 START-OF-SELECTION.
-
+  BREAK-POINT.
   CASE abap_true.
     WHEN p_creat1.
       lc_sales_v1->create_mock_zcustomer( ).
     WHEN p_creat2.
-      lc_sales_v1->create_refdata( ).
+      lc_sales_v1->create_refdata_zcustomer( ).
   ENDCASE.
