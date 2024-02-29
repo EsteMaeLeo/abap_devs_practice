@@ -35,21 +35,55 @@ CLASS lcl_sales_v1 DEFINITION FINAL.
 
     CLASS-DATA: lv_rows TYPE i.
 
-    METHODS: create_mock_zcustomer,
+    METHODS:
+      constructor,
+      get_sales_data IMPORTING rows TYPE i,
+      insert_zcustomer IMPORTING t_zcustomers TYPE tt_zcustomers,
+      create_mock_zcustomer,
       create_refdata_zcustomer,
       reference_integer.
 
   PRIVATE SECTION.
-    DATA: lt_customers TYPE STANDARD TABLE OF zcustomers.
+    DATA: lt_customers TYPE tt_zcustomers.
 
 ENDCLASS.
 
 CLASS lcl_sales_v1 IMPLEMENTATION.
 
-  METHOD create_mock_zcustomer.
+  METHOD constructor.
 
+    FREE lt_customers.
+    CLEAR lv_rows.
+
+  ENDMETHOD.
+
+  METHOD get_sales_data.
+
+    DATA lv_client TYPE sy-mandt.
+
+    lv_client = '800'.
+
+    SELECT FROM vbak USING CLIENT @lv_client
+    FIELDS mandt, vbeln, telf1, kunnr
+    INTO TABLE @DATA(it_vbak)
+    UP TO @rows ROWS.
+
+  ENDMETHOD.
+
+  METHOD insert_zcustomer.
     DATA :lx_root TYPE REF TO cx_root,
           err_msg TYPE char200.
+    TRY.
+        INSERT zcustomers FROM TABLE  t_zcustomers.
+      CATCH cx_root INTO lx_root.
+
+        err_msg = lx_root->get_text( ).
+    ENDTRY.
+  ENDMETHOD.
+
+  METHOD create_mock_zcustomer.
+
+    me->get_sales_data( 20  ).
 
     lt_customers = VALUE tt_zcustomers( FOR i = 1 UNTIL i > 10
                                      ( customerid = i
@@ -59,22 +93,17 @@ CLASS lcl_sales_v1 IMPLEMENTATION.
                                        city       = |Springfield|
                                        country    = |USA|
                                        postalcode = zcl_global_utils=>get_random_numbers_int( EXPORTING
-                                                                                              min    = 999
-                                                                                              max    = 999 )
+                                                                                              min    = 1000
+                                                                                              max    = 9999 )
                                        phone = zcl_global_utils=>get_random_numbers_int( EXPORTING
-                                                                                              min    = 99999
-                                                                                              max    = 99999 ) ) ).
+                                                                                              min    = 1000000
+                                                                                              max    = 9999999 ) ) ).
 
     cl_demo_output=>display( lt_customers ).
 
     DELETE FROM zcustomers.
 
-    TRY.
-        INSERT zcustomers FROM TABLE  lt_customers.
-      CATCH cx_root INTO lx_root.
-
-        err_msg = lx_root->get_text( ).
-    ENDTRY.
+    me->insert_zcustomer( lt_customers  ).
 
 
   ENDMETHOD.
@@ -96,10 +125,10 @@ CLASS lcl_sales_v1 IMPLEMENTATION.
       DELETE FROM zcustomers.
       lcl_sales_v1=>lv_rows = 1.
 
-      lt_customers = VALUE tt_zcustomers( FOR wa_personcr IN it_person
+      lt_customers = VALUE tt_zcustomers( FOR wa_personcr IN it_person INDEX INTO lv_index
                                           (
                                             customerid = wa_personcr-id
-                                            orderid    = wa_personcr-id + 1
+                                            orderid    = lv_index "wa_personcr-id + 1
                                             name       = |{ wa_personcr-name }| & | | & |{ wa_personcr-first_last_name }|
                                             address    = |Address 1|
                                             city       = |Springfield|
@@ -110,6 +139,9 @@ CLASS lcl_sales_v1 IMPLEMENTATION.
                                             phone = zcl_global_utils=>get_random_numbers_int( EXPORTING
                                                                                                    min    = 1000000
                                                                                                    max    = 9999999 ) ) ).
+      IF lines( lt_customers ) NE 0.
+        me->insert_zcustomer( lt_customers  ).
+      ENDIF.
     ENDIF.
   ENDMETHOD.
 
