@@ -52,6 +52,7 @@ CLASS lcl_sales_v1 DEFINITION FINAL.
                        RETURNING VALUE(t_data) TYPE tt_data,
       insert_zcustomer IMPORTING t_zcustomers TYPE tt_zcustomers,
       insert_zorder,
+      get_address IMPORTING t_data TYPE tt_data,
       create_mock_zcustomer,
       create_refdata_zcustomer,
       reference_integer.
@@ -111,7 +112,7 @@ CLASS lcl_sales_v1 IMPLEMENTATION.
       FROM vbak AS v
       INNER JOIN kna1 AS k ON v~kunnr = k~kunnr
       USING CLIENT  @lv_client
-      INTO TABLE @DATA(it_vbak)
+      INTO TABLE @t_data
       UP TO @rows ROWS .
 
     IF sy-subrc EQ 0.
@@ -135,14 +136,26 @@ CLASS lcl_sales_v1 IMPLEMENTATION.
 
   ENDMETHOD.
 
+  METHOD get_address.
+
+    TYPES: tt_adrnr TYPE TABLE OF adrnr WITH EMPTY KEY.
+
+    DATA(lt_adrnr) = VALUE tt_adrnr( FOR wa_data IN t_data
+                              ( wa_data-adrnr ) ).
+
+
+
+  ENDMETHOD.
+
   METHOD create_mock_zcustomer.
 
     me->get_sales_data( 20  ).
-    me->get_sales_datav2( 20  ).
+    data(t_data) = me->get_sales_datav2( 20  ).
 
     lt_customers = VALUE tt_zcustomers( FOR i = 1 UNTIL i > 10
+                                     "let lv_orderid = t_data[ i ]-vbeln in orderid = lv_orderid
                                      ( customerid = i
-                                       orderid    = 1
+                                       orderid    = t_data[ i ]-vbeln
                                        name       = zcl_global_utils=>get_randm_string( 10 )
                                        address    = |Address 1|
                                        city       = |Springfield|
