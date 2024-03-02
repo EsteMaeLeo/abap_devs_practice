@@ -31,6 +31,16 @@ CLASS lcl_sales_v1 DEFINITION FINAL.
 
   PUBLIC SECTION.
 
+    TYPES: BEGIN OF ty_data,
+             mandt TYPE vbak-mandt, "v~vbeln, v~telf1, v~kunnr, k~adrnr
+             vbeln TYPE vbak-vbeln,
+             telf1 TYPE vbak-telf1,
+             kunnr TYPE kna1-kunnr,
+             adrnr TYPE kna1-adrnr,
+           END OF ty_data.
+
+    TYPES tt_data TYPE TABLE OF ty_data WITH EMPTY KEY.
+
     TYPES tt_zcustomers TYPE TABLE OF zcustomers WITH EMPTY KEY.
 
     CLASS-DATA: lv_rows TYPE i.
@@ -38,13 +48,20 @@ CLASS lcl_sales_v1 DEFINITION FINAL.
     METHODS:
       constructor,
       get_sales_data IMPORTING rows TYPE i,
+      get_sales_datav2 IMPORTING rows          TYPE i
+                       RETURNING VALUE(t_data) TYPE tt_data,
       insert_zcustomer IMPORTING t_zcustomers TYPE tt_zcustomers,
+      insert_zorder,
       create_mock_zcustomer,
       create_refdata_zcustomer,
       reference_integer.
 
+  PROTECTED SECTION.
+
   PRIVATE SECTION.
+
     DATA: lt_customers TYPE tt_zcustomers.
+
 
 ENDCLASS.
 
@@ -64,9 +81,42 @@ CLASS lcl_sales_v1 IMPLEMENTATION.
     lv_client = '800'.
 
     SELECT FROM vbak USING CLIENT @lv_client
-    FIELDS mandt, vbeln, telf1, kunnr
-    INTO TABLE @DATA(it_vbak)
-    UP TO @rows ROWS.
+      FIELDS mandt, vbeln, telf1, kunnr
+      INTO TABLE @DATA(it_vbak)
+      UP TO @rows ROWS.
+
+    IF sy-subrc = 0.
+
+      SELECT FROM kna1 USING CLIENT  @lv_client
+        FIELDS kunnr, adrnr
+        FOR ALL ENTRIES IN @it_vbak
+        WHERE kunnr EQ @it_vbak-kunnr
+        INTO TABLE @DATA(lt_ka1).
+
+      IF sy-subrc = 0.
+
+      ENDIF.
+
+    ENDIF.
+
+  ENDMETHOD.
+
+  METHOD get_sales_datav2.
+
+    DATA lv_client TYPE sy-mandt.
+
+    lv_client = '800'.
+
+    SELECT v~mandt, v~vbeln, v~telf1, v~kunnr, k~adrnr
+      FROM vbak AS v
+      INNER JOIN kna1 AS k ON v~kunnr = k~kunnr
+      USING CLIENT  @lv_client
+      INTO TABLE @DATA(it_vbak)
+      UP TO @rows ROWS .
+
+    IF sy-subrc EQ 0.
+
+    ENDIF.
 
   ENDMETHOD.
 
@@ -81,9 +131,14 @@ CLASS lcl_sales_v1 IMPLEMENTATION.
     ENDTRY.
   ENDMETHOD.
 
+  METHOD insert_zorder.
+
+  ENDMETHOD.
+
   METHOD create_mock_zcustomer.
 
     me->get_sales_data( 20  ).
+    me->get_sales_datav2( 20  ).
 
     lt_customers = VALUE tt_zcustomers( FOR i = 1 UNTIL i > 10
                                      ( customerid = i
