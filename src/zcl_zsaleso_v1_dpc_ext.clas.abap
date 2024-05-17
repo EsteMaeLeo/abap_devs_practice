@@ -10,6 +10,7 @@ CLASS zcl_zsaleso_v1_dpc_ext DEFINITION
     METHODS customersset_get_entity REDEFINITION .
     METHODS customersset_get_entityset REDEFINITION .
     METHODS ordersset_create_entity REDEFINITION .
+    METHODS ordersset_get_entity REDEFINITION.
     METHODS paymentsset_create_entity REDEFINITION .
 
   PRIVATE SECTION.
@@ -17,7 +18,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_ZSALESO_V1_DPC_EXT IMPLEMENTATION.
+CLASS zcl_zsaleso_v1_dpc_ext IMPLEMENTATION.
 
 
   METHOD customersset_create_entity.
@@ -43,7 +44,6 @@ CLASS ZCL_ZSALESO_V1_DPC_EXT IMPLEMENTATION.
 
   ENDMETHOD.
 
-
   METHOD customersset_get_entity.
 
     IF line_exists( it_key_tab[ name = 'Customerid' ] ).
@@ -62,7 +62,6 @@ CLASS ZCL_ZSALESO_V1_DPC_EXT IMPLEMENTATION.
 
 
   ENDMETHOD.
-
 
   METHOD customersset_get_entityset.
 
@@ -125,25 +124,43 @@ CLASS ZCL_ZSALESO_V1_DPC_EXT IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
+  METHOD ordersset_get_entity.
 
-  METHOD paymentsset_create_entity.
-    DATA ls_payments TYPE zpayments.
+    DATA(lv_orderid) = it_key_tab[ name = 'Orderid' ]-value.
 
-    io_data_provider->read_entry_data( IMPORTING es_data = ls_payments ).
-
-    INSERT zpayments FROM ls_payments.
+    SELECT SINGLE FROM zorders
+       FIELDS *
+           WHERE orderid EQ @lv_orderid
+           INTO @DATA(ls_orders).
 
     IF sy-subrc EQ 0.
-      er_entity = ls_payments.
-    ELSE.
-
-      DATA(ls_message) = VALUE scx_t100key( msgid = 'SY'
-                                            msgno = 002
-                                            attr1 = 'Error at Insert into table').
-
-      RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
-        EXPORTING
-          textid = ls_message.
     ENDIF.
-  ENDMETHOD.
+
+
+    ENDMETHOD.
+
+
+
+    METHOD paymentsset_create_entity.
+      DATA ls_payments TYPE zpayments.
+
+      io_data_provider->read_entry_data( IMPORTING es_data = ls_payments ).
+
+      INSERT zpayments FROM ls_payments.
+
+      IF sy-subrc EQ 0.
+        er_entity = ls_payments.
+      ELSE.
+
+        DATA(ls_message) = VALUE scx_t100key( msgid = 'SY'
+                                              msgno = 002
+                                              attr1 = 'Error at Insert into table').
+
+        RAISE EXCEPTION TYPE /iwbep/cx_mgw_busi_exception
+          EXPORTING
+            textid = ls_message.
+      ENDIF.
+    ENDMETHOD.
+
+
 ENDCLASS.
