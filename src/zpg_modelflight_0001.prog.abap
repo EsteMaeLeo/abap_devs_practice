@@ -33,7 +33,7 @@ MODULE user_command_0100 INPUT.
     WHEN 'ONLI'.
       PERFORM f_get_data_flight.
     WHEN '&F03' OR '&F15'.
-      LEAVE TO SCREEN 0.
+      LEAVE TO SCREEN 90.
     WHEN OTHERS.
   ENDCASE.
 ENDMODULE.
@@ -53,3 +53,45 @@ FORM f_get_data_flight.
   ENDIF.
 
 ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Module  STATUS_0090  OUTPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE status_0090 OUTPUT.
+  SET PF-STATUS 'ZSTANDARD'.
+  SET TITLEBAR 'ZSTATUS'.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0090  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0090 INPUT.
+
+
+  CASE ok_code.
+    WHEN 'BNSPS'.
+      CALL SCREEN 100.
+    WHEN '&F03' OR '&F15'.
+      LEAVE PROGRAM.
+    WHEN OTHERS.
+  ENDCASE.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  STATUS_0200  OUTPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE status_0200 OUTPUT.
+*  SET PF-STATUS 'xxxxxxxx'.
+*  SET TITLEBAR 'xxx'.
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0200  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0200 INPUT.
+
+ENDMODULE.
