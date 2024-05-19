@@ -10,4 +10,5 @@ TABLES: sdyn_conn,
 DATA wa_spfli TYPE spfli.
 
 DATA: g_dynnr TYPE sy-dynnr,
-      ok_code TYPE sy-ucomm.
+      ok_code TYPE sy-ucomm,
+      io_comm TYPE c LENGTH 1.
