@@ -1024,8 +1024,8 @@
        <CONT_NAME>SCREEN</CONT_NAME>
        <TYPE>TEXT</TYPE>
        <NAME>SYST-UZEIT</NAME>
-       <LINE>002</LINE>
-       <COLUMN>004</COLUMN>
+       <LINE>003</LINE>
+       <COLUMN>011</COLUMN>
        <LENGTH>010</LENGTH>
        <VISLENGTH>010</VISLENGTH>
        <HEIGHT>001</HEIGHT>
@@ -1040,8 +1040,8 @@
        <CONT_NAME>SCREEN</CONT_NAME>
        <TYPE>TEMPLATE</TYPE>
        <NAME>SYST-UZEIT</NAME>
-       <LINE>002</LINE>
-       <COLUMN>015</COLUMN>
+       <LINE>003</LINE>
+       <COLUMN>022</COLUMN>
        <LENGTH>008</LENGTH>
        <VISLENGTH>008</VISLENGTH>
        <HEIGHT>001</HEIGHT>
@@ -1056,8 +1056,8 @@
        <TYPE>PUSH</TYPE>
        <NAME>BNEXIT</NAME>
        <TEXT>Exit</TEXT>
-       <LINE>004</LINE>
-       <COLUMN>011</COLUMN>
+       <LINE>005</LINE>
+       <COLUMN>018</COLUMN>
        <LENGTH>004</LENGTH>
        <VISLENGTH>004</VISLENGTH>
        <HEIGHT>001</HEIGHT>
@@ -2751,20 +2751,20 @@
       <OBJ_TYPE>A</OBJ_TYPE>
       <OBJ_CODE>000002</OBJ_CODE>
       <MODAL>D</MODAL>
-      <INT_NOTE>Flight Model</INT_NOTE>
+      <INT_NOTE>Flight Data</INT_NOTE>
      </RSMPE_ATRT>
      <RSMPE_ATRT>
       <OBJ_TYPE>P</OBJ_TYPE>
       <OBJ_CODE>000002</OBJ_CODE>
       <MODAL>D</MODAL>
-      <INT_NOTE>Flight Model</INT_NOTE>
+      <INT_NOTE>Flight Data</INT_NOTE>
      </RSMPE_ATRT>
      <RSMPE_ATRT>
       <OBJ_TYPE>B</OBJ_TYPE>
       <OBJ_CODE>000002</OBJ_CODE>
       <SUB_CODE>0001</SUB_CODE>
       <MODAL>D</MODAL>
-      <INT_NOTE>Flight Model</INT_NOTE>
+      <INT_NOTE>Flight Data</INT_NOTE>
      </RSMPE_ATRT>
     </DOC>
    </CUA>
